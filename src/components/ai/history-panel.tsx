@@ -1,24 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { toast } from 'sonner'
-import dayjs from 'dayjs'
-import ReactECharts from 'echarts-for-react'
 import { useRouter } from 'next/navigation'
-import { listMyChartVoByPage, deleteChart } from '@/api/ai/smartAnalysisController'
-import { ChartTypeEnum, ChartStatusEnum } from '../../enums/ChartTypeEnum'
-import { getChartIcon, chartIconMap } from '@/constants/chartIcons'
-import {
-  Trash2,
-  Clock,
-  ChevronRight,
-  TrendingUp,
-  Loader2,
-} from 'lucide-react'
+import { deleteChart, listMyChartVoByPage } from '@/api/ai/smartAnalysisController'
+import { ChartStatusEnum, ChartTypeEnum } from '@/enums/ChartTypeEnum'
+import { chartIconMap, getChartIcon } from '@/constants/chartIcons'
+import { ChevronRight, Clock, Loader2, Trash2, TrendingUp, } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface HistoryPanelProps {

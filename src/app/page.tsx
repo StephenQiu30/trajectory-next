@@ -348,7 +348,7 @@ export default function LandingPage() {
             <div className="flex items-center justify-center gap-4 pt-8">
               <Button
                 size="lg"
-                className="h-16 rounded-full px-12 text-xl font-medium shadow-xl transition-all hover:scale-105 active:scale-95 bg-[#0071e3] text-white hover:bg-[#0071e3]/90"
+                className="h-16 rounded-full bg-[#0071e3] px-12 text-xl font-medium text-white shadow-xl transition-all hover:scale-105 hover:bg-[#0071e3]/90 active:scale-95"
                 asChild
               >
                 <Link href="/ai">

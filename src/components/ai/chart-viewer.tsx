@@ -3,8 +3,8 @@
 import * as React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ReactECharts from 'echarts-for-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FileSearch, Sparkles, TrendingUp, Cpu, Trash2 } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Cpu, FileSearch, Sparkles, Trash2, TrendingUp } from 'lucide-react'
 
 // Simple markdown component using tailwind prose
 const MarkdownViewer = ({ content }: { content: string }) => {
@@ -50,7 +50,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
             </motion.div>
 
             {/* Minimal static decorations instead of animations */}
-            <div className="absolute -right-6 -top-4 flex h-10 w-10 rotate-[15deg] items-center justify-center rounded-2xl border border-black/5 bg-white/80 shadow-md backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
+            <div className="absolute -top-4 -right-6 flex h-10 w-10 rotate-[15deg] items-center justify-center rounded-2xl border border-black/5 bg-white/80 shadow-md backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
               <TrendingUp className="h-5 w-5 text-gray-400" />
             </div>
             <div className="absolute -bottom-4 -left-6 flex h-12 w-12 -rotate-[10deg] items-center justify-center rounded-2xl border border-black/5 bg-white/80 shadow-md backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
@@ -61,7 +61,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           <h3 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-gray-100">
             等待数据注入
           </h3>
-          <p className="max-w-md text-lg font-medium leading-relaxed text-gray-500/90 dark:text-gray-400">
+          <p className="max-w-md text-lg leading-relaxed font-medium text-gray-500/90 dark:text-gray-400">
             左侧配置分析目标并上传数据。AI 引擎将自动构建清晰、专业的图表信息。
           </p>
         </div>
@@ -82,7 +82,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
       const appleStyle = {
         backgroundColor: 'transparent',
         textStyle: {
-          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         },
         tooltip: {
           ...chartOption.tooltip,
@@ -103,7 +103,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           right: 40,
           containLabel: true,
           borderColor: 'transparent',
-          show: false // remove outer grid borders
+          show: false, // remove outer grid borders
         },
         // Auto-smooth line charts and round bar charts
         series: (chartOption.series || []).map((s: any) => {
@@ -118,23 +118,31 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           }
           return newSeries
         }),
-        xAxis: chartOption.xAxis ? (Array.isArray(chartOption.xAxis) ? chartOption.xAxis : [chartOption.xAxis]).map((x: any) => ({
-          ...x,
-          axisLine: { show: false },  // Hide solid axis line
-          axisTick: { show: false },  // Hide ticks
-          splitLine: { show: false },
-          axisLabel: { color: '#8e8e93', margin: 16 } // Apple gray
-        })) : undefined,
-        yAxis: chartOption.yAxis ? (Array.isArray(chartOption.yAxis) ? chartOption.yAxis : [chartOption.yAxis]).map((y: any) => ({
-          ...y,
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: {
-            show: true,
-            lineStyle: { color: 'rgba(0,0,0,0.04)', type: 'dashed' } // Very faint split lines
-          },
-          axisLabel: { color: '#8e8e93' }
-        })) : undefined,
+        xAxis: chartOption.xAxis
+          ? (Array.isArray(chartOption.xAxis) ? chartOption.xAxis : [chartOption.xAxis]).map(
+              (x: any) => ({
+                ...x,
+                axisLine: { show: false }, // Hide solid axis line
+                axisTick: { show: false }, // Hide ticks
+                splitLine: { show: false },
+                axisLabel: { color: '#8e8e93', margin: 16 }, // Apple gray
+              })
+            )
+          : undefined,
+        yAxis: chartOption.yAxis
+          ? (Array.isArray(chartOption.yAxis) ? chartOption.yAxis : [chartOption.yAxis]).map(
+              (y: any) => ({
+                ...y,
+                axisLine: { show: false },
+                axisTick: { show: false },
+                splitLine: {
+                  show: true,
+                  lineStyle: { color: 'rgba(0,0,0,0.04)', type: 'dashed' }, // Very faint split lines
+                },
+                axisLabel: { color: '#8e8e93' },
+              })
+            )
+          : undefined,
       }
 
       chartOption = { ...chartOption, ...appleStyle }
@@ -144,7 +152,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
   }
 
   return (
-    <div className="grid min-h-[500px] md:min-h-[600px] gap-8 lg:grid-cols-12 pb-10">
+    <div className="grid min-h-[500px] gap-8 pb-10 md:min-h-[600px] lg:grid-cols-12">
       {/* Chart Card */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -178,7 +186,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
                   </p>
                 </div>
               ) : data.genChart ? (
-                <div className="flex-1 w-full mix-blend-multiply dark:mix-blend-normal">
+                <div className="w-full flex-1 mix-blend-multiply dark:mix-blend-normal">
                   <ReactECharts
                     option={chartOption}
                     style={{ height: '100%', minHeight: '400px', width: '100%' }}
@@ -204,16 +212,16 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4 flex"
+            className="flex lg:col-span-4"
           >
-            <Card className="flex flex-col w-full overflow-hidden rounded-[2rem] border-[#0071e3]/10 bg-gradient-to-br from-[#0071e3]/5 to-indigo-500/5 shadow-xl backdrop-blur-xl dark:border-indigo-500/20 dark:from-indigo-950/30 dark:to-blue-900/10">
+            <Card className="flex w-full flex-col overflow-hidden rounded-[2rem] border-[#0071e3]/10 bg-gradient-to-br from-[#0071e3]/5 to-indigo-500/5 shadow-xl backdrop-blur-xl dark:border-indigo-500/20 dark:from-indigo-950/30 dark:to-blue-900/10">
               <CardHeader className="px-8 pt-8 pb-6">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold text-[#0071e3] dark:text-indigo-400">
                   <Sparkles className="h-6 w-6" />
                   AI 深度洞察
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-1 flex-col overflow-hidden px-8 pb-8 pt-0">
+              <CardContent className="flex flex-1 flex-col overflow-hidden px-8 pt-0 pb-8">
                 <div className="flex-1 overflow-y-auto rounded-[1.5rem] bg-white/80 p-6 shadow-sm ring-1 ring-black/5 backdrop-blur-md dark:bg-black/40 dark:ring-white/10">
                   <MarkdownViewer content={data.genResult} />
                 </div>

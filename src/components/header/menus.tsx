@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, User, Sparkles } from 'lucide-react'
+import { Home, Sparkles, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   NavigationMenu,

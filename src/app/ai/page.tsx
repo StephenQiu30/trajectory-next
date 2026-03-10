@@ -2,11 +2,8 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { Card, CardContent } from '@/components/ui/card'
-import { AnalysisForm } from '@/components/ai'
-import { ChartViewer } from '@/components/ai'
-import { HistoryPanel } from '@/components/ai'
-import { Sparkles, History as HistoryIcon, Wand2, BarChart2 } from 'lucide-react'
+import { AnalysisForm, ChartViewer, HistoryPanel } from '@/components/ai'
+import { BarChart2, History as HistoryIcon, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function AiAnalyticsPage() {
@@ -32,7 +29,11 @@ export default function AiAnalyticsPage() {
               <span>AIGC Analytics Engine</span>
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-gray-100">
-              让数据<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">灵动</span>起来。
+              让数据
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+                灵动
+              </span>
+              起来。
             </h1>
             <p className="max-w-xl text-base text-gray-500 dark:text-gray-400">
               无需复杂操作，上传数据，输入需求，AI 为您呈现可交互的深度数据洞察。
@@ -42,10 +43,11 @@ export default function AiAnalyticsPage() {
           <div className="relative z-10 flex shrink-0 items-center gap-3">
             <Button
               variant={showHistory ? 'default' : 'outline'}
-              className={`h-11 rounded-full px-6 text-sm font-medium transition-all ${showHistory
-                ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
-                : 'border-black/5 bg-white/80 text-gray-700 shadow-sm backdrop-blur-md hover:bg-gray-50 dark:border-white/10 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20'
-                }`}
+              className={`h-11 rounded-full px-6 text-sm font-medium transition-all ${
+                showHistory
+                  ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
+                  : 'border-black/5 bg-white/80 text-gray-700 shadow-sm backdrop-blur-md hover:bg-gray-50 dark:border-white/10 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20'
+              }`}
               onClick={() => setShowHistory(!showHistory)}
             >
               {showHistory ? (

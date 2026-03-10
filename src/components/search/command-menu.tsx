@@ -2,7 +2,7 @@
 
 import * as React from 'react' // turbo
 import { useRouter } from 'next/navigation'
-import { Activity, FileText, Home, Settings, User } from 'lucide-react'
+import { Home, Settings, User } from 'lucide-react'
 
 import {
   CommandDialog,
@@ -11,7 +11,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command'
 
