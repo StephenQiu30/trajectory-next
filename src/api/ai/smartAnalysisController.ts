@@ -19,19 +19,40 @@ export async function genChartByAi(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: AiAPI.genChartByAiParams,
   body: {},
+  file?: File,
   options?: { [key: string]: any }
 ) {
+  const formData = new FormData()
+
+  if (file) {
+    formData.append('file', file)
+  }
+
+  Object.keys(body).forEach(ele => {
+    const item = (body as any)[ele]
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach(f => formData.append(ele, f || ''))
+        } else {
+          formData.append(ele, new Blob([JSON.stringify(item)], { type: 'application/json' }))
+        }
+      } else {
+        formData.append(ele, item)
+      }
+    }
+  })
+
   return request<AiAPI.BaseResponseChart>('/ai/analysis/gen', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     params: {
       ...params,
       chartGenRequest: undefined,
       ...params['chartGenRequest'],
     },
-    data: body,
+    data: formData,
+    requestType: 'form',
     ...(options || {}),
   })
 }
@@ -41,19 +62,40 @@ export async function genChartByAiAsync(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: AiAPI.genChartByAiAsyncParams,
   body: {},
+  file?: File,
   options?: { [key: string]: any }
 ) {
+  const formData = new FormData()
+
+  if (file) {
+    formData.append('file', file)
+  }
+
+  Object.keys(body).forEach(ele => {
+    const item = (body as any)[ele]
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach(f => formData.append(ele, f || ''))
+        } else {
+          formData.append(ele, new Blob([JSON.stringify(item)], { type: 'application/json' }))
+        }
+      } else {
+        formData.append(ele, item)
+      }
+    }
+  })
+
   return request<AiAPI.BaseResponseLong>('/ai/analysis/gen/async', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     params: {
       ...params,
       chartGenRequest: undefined,
       ...params['chartGenRequest'],
     },
-    data: body,
+    data: formData,
+    requestType: 'form',
     ...(options || {}),
   })
 }
