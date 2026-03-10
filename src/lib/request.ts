@@ -14,7 +14,7 @@ const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8101/a
  */
 const axiosInstance = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout: 60000,
   withCredentials: true,
   transformResponse: [
     data => {

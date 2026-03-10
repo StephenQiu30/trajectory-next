@@ -371,10 +371,11 @@ export default function SettingsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className={`mt-6 rounded-2xl border p-4 text-sm font-medium ${message.type === 'success'
+                  className={`mt-6 rounded-2xl border p-4 text-sm font-medium ${
+                    message.type === 'success'
                       ? 'border-green-500/20 bg-green-500/10 text-green-600'
                       : 'border-red-500/20 bg-red-500/10 text-red-600'
-                    }`}
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     {message.type === 'success' ? (

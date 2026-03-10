@@ -116,16 +116,21 @@ export default function ProfilePage() {
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* 左侧 - 用户名片 (4cols) */}
-        <motion.div className="lg:col-span-4 lg:sticky lg:top-24 self-start" variants={itemVariants}>
-          <Card className="border-border/50 bg-background shadow-sm rounded-3xl overflow-hidden flex flex-col relative w-full">
+        <motion.div
+          className="self-start lg:sticky lg:top-24 lg:col-span-4"
+          variants={itemVariants}
+        >
+          <Card className="border-border/50 bg-background relative flex w-full flex-col overflow-hidden rounded-3xl shadow-sm">
             {/* Minimal Apple-Style Themed Header */}
-            <div className="h-32 relative bg-primary/5 dark:bg-primary/10 border-b border-border/50 transition-colors">
-              <div className="absolute top-4 right-4 flex items-center gap-2 bg-background/80 backdrop-blur-[2px] px-3 py-1 rounded-full border border-border shadow-sm">
+            <div className="bg-primary/5 dark:bg-primary/10 border-border/50 relative h-32 border-b transition-colors">
+              <div className="bg-background/80 border-border absolute top-4 right-4 flex items-center gap-2 rounded-full border px-3 py-1 shadow-sm backdrop-blur-[2px]">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
                 </span>
-                <span className="text-xs font-semibold text-primary uppercase tracking-wider">Active</span>
+                <span className="text-primary text-xs font-semibold tracking-wider uppercase">
+                  Active
+                </span>
               </div>
             </div>
 
@@ -191,15 +196,19 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="px-2 pt-2">
-                  <p className="text-muted-foreground/80 leading-relaxed text-sm">
+                  <p className="text-muted-foreground/80 text-sm leading-relaxed">
                     "{user?.userProfile || '这个人很懒，什么都没留下...'}"
                   </p>
                 </div>
 
                 {/* 核心数据 - Apple Themed Metrics */}
-                <div className="grid grid-cols-1 gap-3 mt-8">
-                  <div className="bg-primary/5 dark:bg-primary/10 rounded-[20px] p-4 flex flex-col items-center justify-center border border-primary/10 hover:bg-primary/10 hover:scale-[1.02] transition-all cursor-default">
-                    <StatItem label="已加入天数" value={accountAge} icon={<Zap className="w-4 h-4 text-emerald-500 mb-1" />} />
+                <div className="mt-8 grid grid-cols-1 gap-3">
+                  <div className="bg-primary/5 dark:bg-primary/10 border-primary/10 hover:bg-primary/10 flex cursor-default flex-col items-center justify-center rounded-[20px] border p-4 transition-all hover:scale-[1.02]">
+                    <StatItem
+                      label="已加入天数"
+                      value={accountAge}
+                      icon={<Zap className="mb-1 h-4 w-4 text-emerald-500" />}
+                    />
                   </div>
                 </div>
               </div>
@@ -210,15 +219,18 @@ export default function ProfilePage() {
         {/* 右侧 - 动态与详情模块 (8cols) */}
         <motion.div className="space-y-6 lg:col-span-8" variants={itemVariants}>
           <Tabs defaultValue="about" className="w-full space-y-6">
-            <TabsList className="bg-primary/5 dark:bg-primary/10 h-14 w-full justify-start rounded-2xl p-1.5 border border-primary/10 backdrop-blur-md">
-              <TabsTrigger value="about" className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border-primary/20 rounded-xl px-6 py-2.5 text-sm font-medium transition-all border border-transparent">
+            <TabsList className="bg-primary/5 dark:bg-primary/10 border-primary/10 h-14 w-full justify-start rounded-2xl border p-1.5 backdrop-blur-md">
+              <TabsTrigger
+                value="about"
+                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:border-primary/20 rounded-xl border border-transparent px-6 py-2.5 text-sm font-medium transition-all data-[state=active]:shadow-sm"
+              >
                 <UserIcon className="mr-2 h-4 w-4" />
                 关于我
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="about" className="space-y-6 outline-none">
-              <Card className="border-border/50 bg-background shadow-sm rounded-3xl">
+              <Card className="border-border/50 bg-background rounded-3xl shadow-sm">
                 <CardHeader className="p-8 pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <UserIcon className="text-primary h-5 w-5" />
@@ -275,7 +287,7 @@ export default function ProfilePage() {
               </Card>
 
               {/* 账户历程 */}
-              <Card className="border-border/50 bg-background shadow-sm rounded-3xl">
+              <Card className="border-border/50 bg-background rounded-3xl shadow-sm">
                 <CardHeader className="p-8 pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Calendar className="text-primary h-5 w-5" />
@@ -289,10 +301,10 @@ export default function ProfilePage() {
                       value={
                         user?.createTime
                           ? new Date(user.createTime).toLocaleDateString('zh-CN', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })
                           : '未知'
                       }
                     />
@@ -315,10 +327,10 @@ export default function ProfilePage() {
                 <Link href="/user/settings" className="flex-1">
                   <Button
                     variant="outline"
-                    className="border-black/5 dark:border-white/5 bg-background shadow-sm hover:bg-secondary/50 h-14 w-full justify-between rounded-xl px-6 transition-all"
+                    className="bg-background hover:bg-secondary/50 h-14 w-full justify-between rounded-xl border-black/5 px-6 shadow-sm transition-all dark:border-white/5"
                   >
                     <div className="flex items-center gap-3">
-                      <Edit className="h-4 w-4 text-primary" />
+                      <Edit className="text-primary h-4 w-4" />
                       <span className="font-medium">完善个人资料</span>
                     </div>
                     <div className="text-muted-foreground text-xl">→</div>
@@ -346,8 +358,10 @@ function StatItem({
   return (
     <div className="flex flex-col items-center justify-center">
       {icon}
-      <div className="text-foreground text-xl md:text-2xl font-bold tracking-tight">{value}</div>
-      <div className="text-muted-foreground text-[10px] md:text-xs font-medium uppercase tracking-wider">{label}</div>
+      <div className="text-foreground text-xl font-bold tracking-tight md:text-2xl">{value}</div>
+      <div className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase md:text-xs">
+        {label}
+      </div>
     </div>
   )
 }

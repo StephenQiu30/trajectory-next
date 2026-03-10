@@ -104,7 +104,7 @@ export default function LandingPage() {
               className="h-12 rounded-full bg-black px-8 text-base font-medium text-white shadow-lg transition-all hover:scale-105 hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
               asChild
             >
-              <Link href="/user/profile">立即开始</Link>
+              <Link href="/ai">立即开始</Link>
             </Button>
             <Button
               size="lg"
@@ -127,7 +127,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="group relative h-[400px] md:h-[600px] w-full overflow-hidden rounded-[3rem] border border-black/5 bg-white/50 shadow-2xl backdrop-blur-3xl dark:border-white/10 dark:bg-white/5"
+            className="group relative h-[400px] w-full overflow-hidden rounded-[3rem] border border-black/5 bg-white/50 shadow-2xl backdrop-blur-3xl md:h-[600px] dark:border-white/10 dark:bg-white/5"
           >
             {/* Visual Design Mockup */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-from)_0%,transparent_70%)] from-blue-500/10 opacity-50" />
@@ -135,7 +135,7 @@ export default function LandingPage() {
               <div className="grid w-full items-center gap-8 md:grid-cols-2">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                    <div className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
                     <span className="text-sm font-medium text-blue-500">AI 分析中...</span>
                   </div>
                   <h3 className="text-2xl font-bold md:text-3xl">轨迹：让数据讲述动人故事</h3>
@@ -171,7 +171,7 @@ export default function LandingPage() {
                     {[30, 60, 45, 80, 50].map((h, i) => (
                       <motion.div
                         key={i}
-                        className="w-4 bg-blue-500/40 rounded-t-lg"
+                        className="w-4 rounded-t-lg bg-blue-500/40"
                         initial={{ height: 0 }}
                         whileInView={{ height: h }}
                         transition={{ delay: i * 0.1, duration: 1 }}
@@ -302,7 +302,9 @@ export default function LandingPage() {
                       <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
                       <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
                     </div>
-                    <div className="text-[10px] uppercase tracking-widest text-[#5c6370] font-bold">AIGC_ANALYTICS.PRO</div>
+                    <div className="text-[10px] font-bold tracking-widest text-[#5c6370] uppercase">
+                      AIGC_ANALYTICS.PRO
+                    </div>
                   </div>
                   <div className="font-mono text-[13px] leading-relaxed">
                     <div className="flex gap-2">
@@ -314,12 +316,12 @@ export default function LandingPage() {
                       <span className="text-[#98c379]">AI:</span>
                       <span className="text-white/80">正在生成年度销售趋势图表...</span>
                     </div>
-                    <div className="mt-4 flex items-end gap-1.5 h-16">
-                      <div className="w-2 bg-[#61afef]/40 rounded-t-sm h-[40%]" />
-                      <div className="w-2 bg-[#61afef]/60 rounded-t-sm h-[60%]" />
-                      <div className="w-2 bg-[#61afef] rounded-t-sm h-[90%]" />
-                      <div className="w-2 bg-[#61afef]/70 rounded-t-sm h-[70%]" />
-                      <div className="w-2 bg-[#61afef]/50 rounded-t-sm h-[50%]" />
+                    <div className="mt-4 flex h-16 items-end gap-1.5">
+                      <div className="h-[40%] w-2 rounded-t-sm bg-[#61afef]/40" />
+                      <div className="h-[60%] w-2 rounded-t-sm bg-[#61afef]/60" />
+                      <div className="h-[90%] w-2 rounded-t-sm bg-[#61afef]" />
+                      <div className="h-[70%] w-2 rounded-t-sm bg-[#61afef]/70" />
+                      <div className="h-[50%] w-2 rounded-t-sm bg-[#61afef]/50" />
                     </div>
                   </div>
                 </div>
@@ -346,10 +348,10 @@ export default function LandingPage() {
             <div className="flex items-center justify-center gap-4 pt-8">
               <Button
                 size="lg"
-                className="h-16 rounded-full px-12 text-xl font-medium shadow-xl transition-all hover:scale-105 active:scale-95"
+                className="h-16 rounded-full px-12 text-xl font-medium shadow-xl transition-all hover:scale-105 active:scale-95 bg-[#0071e3] text-white hover:bg-[#0071e3]/90"
                 asChild
               >
-                <Link href="/user/profile">
+                <Link href="/ai">
                   立即开启之旅 <ArrowRight className="ml-2 h-6 w-6" />
                 </Link>
               </Button>

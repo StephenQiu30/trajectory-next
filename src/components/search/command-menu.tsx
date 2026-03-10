@@ -15,8 +15,6 @@ import {
   CommandShortcut,
 } from '@/components/ui/command'
 
-
-
 interface CommandMenuProps {
   open: boolean
   onOpenChange: (open: boolean) => void

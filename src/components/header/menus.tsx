@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, User } from 'lucide-react'
+import { Home, User, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   NavigationMenu,
@@ -24,6 +24,7 @@ export interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { title: '首页', href: '/', icon: <Home className="h-4 w-4" /> },
+  { title: '智能分析', href: '/ai', icon: <Sparkles className="h-4 w-4" /> },
   {
     title: '我的空间',
     href: '/user/profile',
