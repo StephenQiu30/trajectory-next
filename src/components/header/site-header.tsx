@@ -15,17 +15,17 @@ export function SiteHeader() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
   return (
-    <header className="bg-background/70 supports-backdrop-filter:bg-background/50 border-border/40 sticky top-0 z-50 w-full border-b backdrop-blur-xl transition-all duration-300">
-      <div className="container mx-auto grid h-16 grid-cols-3 items-center px-4">
-        <div className="flex items-center gap-4">
+    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
+      <div className="glass apple-shadow w-full max-w-7xl h-14 rounded-2xl flex items-center px-6 transition-all duration-300">
+        <div className="flex-1 flex items-center gap-4">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
+              <Button variant="ghost" size="icon" className="lg:hidden hover:bg-transparent">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs overflow-y-auto">
+            <SheetContent side="left" className="glass border-none w-full max-w-xs overflow-y-auto">
               <MobileMenuContent onClose={() => setMobileMenuOpen(false)} />
             </SheetContent>
           </Sheet>
@@ -34,11 +34,11 @@ export function SiteHeader() {
           <SiteLogo showText={false} className="shrink-0 sm:hidden" />
         </div>
 
-        <div className="hidden items-center justify-center lg:flex">
+        <nav className="hidden items-center justify-center lg:flex">
           <Menus />
-        </div>
+        </nav>
 
-        <div className="flex items-center justify-end">
+        <div className="flex-1 flex items-center justify-end">
           <HeaderActions authModalOpen={authModalOpen} onAuthModalOpenChange={setAuthModalOpen} />
         </div>
       </div>

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { UserRoleEnum } from '@/enums/UserRoleEnum'
 import { searchUserByPage } from '@/api/search/searchController'
 
 const containerVariants = {
@@ -130,7 +131,7 @@ export default function UserDetailPage() {
 
   return (
     <motion.div
-      className="container mx-auto max-w-6xl space-y-8 py-8 md:py-12"
+      className="container mx-auto max-w-6xl space-y-8 py-32 md:py-40"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -182,7 +183,7 @@ export default function UserDetailPage() {
                 <div className="flex justify-center gap-2">
                   <Badge variant="secondary" className="bg-secondary/50 font-medium">
                     <RoleIcon className="mr-1.5 h-3.5 w-3.5 opacity-70" />
-                    {roleInfo.label}
+                    {user.userRole === UserRoleEnum.ADMIN ? '管理员' : '普通用户'}
                   </Badge>
                   <Badge variant="outline" className="border-primary/20 text-primary font-medium">
                     <Award className="mr-1.5 h-3.5 w-3.5" />

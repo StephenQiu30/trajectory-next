@@ -3,10 +3,11 @@
 import * as React from 'react'
 import { useAppSelector } from '@/store/hooks'
 import type { RootState } from '@/store'
+import { UserRoleEnum } from '@/enums/UserRoleEnum'
 import { UserAvatar } from '@/components/header/user-avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AuthModal } from '@/components/auth/auth-modal'
@@ -88,257 +89,150 @@ export default function ProfilePage() {
 
   return (
     <motion.div
-      className="container mx-auto max-w-6xl space-y-8 py-8 md:py-12"
+      className="container mx-auto max-w-6xl space-y-12 py-32 md:py-40"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* 顶部标题栏 */}
-      <motion.div className="flex items-center justify-between" variants={itemVariants}>
-        <div className="space-y-1">
-          <h1 className="from-foreground to-foreground/70 bg-gradient-to-r bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
-            个人档案
+      {/* Ambient background decorative elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <div className="absolute top-[20%] left-[10%] w-[30rem] h-[30rem] bg-primary/5 rounded-full blur-[100px] animate-blob" />
+        <div className="absolute bottom-[20%] right-[10%] w-[25rem] h-[25rem] bg-primary/5 rounded-full blur-[100px] animate-blob [animation-delay:2s]" />
+      </div>
+
+      <motion.div className="flex flex-col sm:flex-row items-center justify-between gap-6" variants={itemVariants}>
+        <div className="space-y-1 text-center sm:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            个人中心
           </h1>
-          <p className="text-muted-foreground text-lg">
-            你好，{user?.userName || '探索者'}。这是你的个人中心。
+          <p className="text-foreground/40 text-lg font-bold uppercase tracking-widest">
+            Discovery & Profile
           </p>
         </div>
         <Link href="/user/settings">
           <Button
             size="lg"
-            className="gap-2 shadow-lg transition-all hover:scale-105 active:scale-95"
+            className="rounded-2xl bg-primary hover:bg-primary/90 text-white gap-2 apple-shadow transition-all active:scale-95 h-14 px-8 font-bold"
           >
-            <Edit className="h-4 w-4" />
+            <Edit className="h-5 w-5" />
             编辑资料
           </Button>
         </Link>
       </motion.div>
 
-      <div className="grid gap-8 lg:grid-cols-12">
-        {/* 左侧 - 用户名片 (4cols) */}
+      <div className="grid gap-10 lg:grid-cols-12">
+        {/* Left Sidebar */}
         <motion.div
           className="self-start lg:sticky lg:top-24 lg:col-span-4"
           variants={itemVariants}
         >
-          <Card className="border-border/50 bg-background relative flex w-full flex-col overflow-hidden rounded-3xl shadow-sm">
-            {/* Minimal Apple-Style Themed Header */}
-            <div className="bg-primary/5 dark:bg-primary/10 border-border/50 relative h-32 border-b transition-colors">
-              <div className="bg-background/80 border-border absolute top-4 right-4 flex items-center gap-2 rounded-full border px-3 py-1 shadow-sm backdrop-blur-[2px]">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                </span>
-                <span className="text-primary text-xs font-semibold tracking-wider uppercase">
-                  Active
-                </span>
+          <div className="glass apple-shadow relative flex w-full flex-col overflow-hidden rounded-[2.5rem] p-8 border-none">
+            <div className="flex flex-col items-center text-center space-y-6">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors animate-float" />
+                <UserAvatar
+                  user={user}
+                  size="xl"
+                  className="relative h-40 w-40 border-8 border-background/50 shadow-2xl transition-transform duration-700 group-hover:rotate-6 scale-110"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tight">
+                  {user?.userName || '未设置用户名'}
+                </h2>
+                <p className="text-foreground/40 flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest">
+                  <AtSign className="h-4 w-4" />
+                  {user?.userEmail?.split('@')[0] || 'unknown'}
+                </p>
+              </div>
+
+              <div className="flex justify-center gap-3">
+                <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1.5 rounded-full apple-shadow">
+                  <RoleIcon className="mr-1.5 h-4 w-4" />
+                  {user.userRole === UserRoleEnum.ADMIN ? 'Administrator' : 'Explorer'}
+                </Badge>
+                <Badge variant="outline" className="border-border/50 text-foreground/60 font-bold px-4 py-1.5 rounded-full bg-secondary/30">
+                  <Award className="mr-1.5 h-4 w-4" />
+                  Lv.1 探索者
+                </Badge>
+              </div>
+
+              <div className="bg-secondary/20 rounded-3xl p-6 w-full italic font-medium text-foreground/60 leading-relaxed">
+                "{user?.userProfile || '致力于发现数据背后的灵感与真理。'}"
+              </div>
+
+              <div className="w-full pt-4">
+                <div className="bg-primary/5 border border-primary/10 flex flex-col items-center justify-center rounded-[2rem] p-6 apple-shadow transition-all hover:bg-primary/10">
+                  <Zap className="mb-2 h-6 w-6 text-primary" />
+                  <div className="text-3xl font-bold tracking-tighter">{accountAge}</div>
+                  <div className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em]">已加入天数</div>
+                </div>
               </div>
             </div>
-
-            <CardContent className="relative px-8 pt-0 pb-8">
-              {/* 头像 */}
-              <div className="-mt-16 mb-6 flex justify-center">
-                <div className="relative">
-                  <UserAvatar
-                    user={user}
-                    size="xl"
-                    className="border-background h-32 w-32 border-[6px] shadow-xl"
-                  />
-                  <div className="border-background absolute right-2 bottom-2 h-5 w-5 rounded-full border-4 bg-green-500 shadow-sm" />
-                </div>
-              </div>
-
-              {/* 基本信息 */}
-              <div className="space-y-4 text-center">
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-bold tracking-tight">
-                    {user?.userName || '未设置用户名'}
-                  </h2>
-                  <p className="text-muted-foreground flex items-center justify-center gap-1 text-sm font-medium">
-                    <AtSign className="h-3 w-3" />
-                    {user?.userEmail?.split('@')[0] || 'unknown'}
-                  </p>
-                </div>
-
-                <div className="flex justify-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge
-                          variant="secondary"
-                          className="bg-secondary/50 cursor-help font-medium"
-                        >
-                          <RoleIcon className="mr-1.5 h-3.5 w-3.5 opacity-70" />
-                          {roleInfo.label}
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>当前用户角色: {roleInfo.label}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge
-                          variant="outline"
-                          className="border-primary/20 text-primary cursor-help font-medium"
-                        >
-                          <Award className="mr-1.5 h-3.5 w-3.5" />
-                          Lv.1 成员
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>当前等级: Lv.1 (初级探索者)</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-
-                <div className="px-2 pt-2">
-                  <p className="text-muted-foreground/80 text-sm leading-relaxed">
-                    "{user?.userProfile || '这个人很懒，什么都没留下...'}"
-                  </p>
-                </div>
-
-                {/* 核心数据 - Apple Themed Metrics */}
-                <div className="mt-8 grid grid-cols-1 gap-3">
-                  <div className="bg-primary/5 dark:bg-primary/10 border-primary/10 hover:bg-primary/10 flex cursor-default flex-col items-center justify-center rounded-[20px] border p-4 transition-all hover:scale-[1.02]">
-                    <StatItem
-                      label="已加入天数"
-                      value={accountAge}
-                      icon={<Zap className="mb-1 h-4 w-4 text-emerald-500" />}
-                    />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          </div>
         </motion.div>
 
-        {/* 右侧 - 动态与详情模块 (8cols) */}
-        <motion.div className="space-y-6 lg:col-span-8" variants={itemVariants}>
-          <Tabs defaultValue="about" className="w-full space-y-6">
-            <TabsList className="bg-primary/5 dark:bg-primary/10 border-primary/10 h-14 w-full justify-start rounded-2xl border p-1.5 backdrop-blur-md">
-              <TabsTrigger
-                value="about"
-                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:border-primary/20 rounded-xl border border-transparent px-6 py-2.5 text-sm font-medium transition-all data-[state=active]:shadow-sm"
-              >
-                <UserIcon className="mr-2 h-4 w-4" />
-                关于我
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="about" className="space-y-6 outline-none">
-              <Card className="border-border/50 bg-background rounded-3xl shadow-sm">
-                <CardHeader className="p-8 pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <UserIcon className="text-primary h-5 w-5" />
-                    基本信息
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-8 pt-0">
-                  <div className="grid gap-x-12 gap-y-8 sm:grid-cols-2">
-                    <InfoItem
-                      label="用户昵称"
-                      value={user?.userName || '未设置'}
-                      description="在社区展示的名字"
-                    />
-                    <InfoItem
-                      label="电子邮箱"
-                      value={user?.userEmail || '未绑定'}
-                      description="用于接收重要通知"
-                    />
-                    <InfoItem
-                      label="手机号码"
-                      value={user?.userPhone || '未绑定'}
-                      description="账号安全验证"
-                    />
-                    <InfoItem
-                      label="用户 ID"
-                      value={user?.id ? `#${user.id}` : '未知'}
-                      description="系统唯一识别码"
-                    />
-                    {user?.githubLogin && (
-                      <InfoItem
-                        label="GitHub"
-                        value={
-                          <div className="flex items-center gap-2">
-                            <Github className="h-4 w-4" />
-                            {user?.githubUrl ? (
-                              <a
-                                href={user.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:underline"
-                              >
-                                {user.githubLogin}
-                              </a>
-                            ) : (
-                              user?.githubLogin
-                            )}
-                          </div>
-                        }
-                        description="已绑定的 GitHub 账号"
-                      />
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* 账户历程 */}
-              <Card className="border-border/50 bg-background rounded-3xl shadow-sm">
-                <CardHeader className="p-8 pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Calendar className="text-primary h-5 w-5" />
-                    账户历程
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-8 pt-0">
-                  <div className="grid gap-x-12 gap-y-8 sm:grid-cols-2">
-                    <InfoItem
-                      label="注册日期"
-                      value={
-                        user?.createTime
-                          ? new Date(user.createTime).toLocaleDateString('zh-CN', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            })
-                          : '未知'
-                      }
-                    />
-                    <InfoItem label="常用活跃地" value="已开启地理屏蔽" />
-                  </div>
-                  <div className="bg-secondary/20 mt-8 flex items-center gap-4 rounded-xl p-4">
-                    <div className="bg-background flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-                      <Shield className="h-5 w-5 text-emerald-500" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium">账户状态良好</h4>
-                      <p className="text-muted-foreground text-xs">通过所有安全验证</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* 账户安全 & 隐私 Actions */}
-              <div className="flex gap-4">
-                <Link href="/user/settings" className="flex-1">
-                  <Button
-                    variant="outline"
-                    className="bg-background hover:bg-secondary/50 h-14 w-full justify-between rounded-xl border-black/5 px-6 shadow-sm transition-all dark:border-white/5"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Edit className="text-primary h-4 w-4" />
-                      <span className="font-medium">完善个人资料</span>
-                    </div>
-                    <div className="text-muted-foreground text-xl">→</div>
-                  </Button>
-                </Link>
+        {/* Right Content */}
+        <motion.div className="space-y-8 lg:col-span-8" variants={itemVariants}>
+          <div className="glass apple-shadow rounded-[2.5rem] p-10 space-y-10 border-none">
+            <section className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl bg-primary/10 apple-shadow">
+                   <UserIcon className="text-primary h-6 w-6" />
+                </div>
+                <h3 className="text-2xl font-bold tracking-tight">账户详情</h3>
               </div>
-            </TabsContent>
-          </Tabs>
+              <div className="grid gap-12 sm:grid-cols-2">
+                <InfoItem label="用户昵称" value={user?.userName} />
+                <InfoItem label="电子邮箱" value={user?.userEmail} />
+                <InfoItem label="手机号码" value={user?.userPhone || '未绑定'} />
+                <InfoItem label="系统 ID标记" value={`#${user?.id || '0000'}`} />
+                {user?.githubLogin && (
+                  <InfoItem
+                    label="GitHub 关联"
+                    value={
+                      <a href={user.githubUrl} className="text-primary hover:underline font-bold flex items-center gap-2">
+                        <Github className="h-4 w-4" />
+                        {user.githubLogin}
+                      </a>
+                    }
+                  />
+                )}
+              </div>
+            </section>
+
+            <div className="h-px bg-border/40" />
+
+            <section className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl bg-primary/10 apple-shadow">
+                   <Calendar className="text-primary h-6 w-6" />
+                </div>
+                <h3 className="text-2xl font-bold tracking-tight">时间轨迹</h3>
+              </div>
+              <div className="grid gap-12 sm:grid-cols-2">
+                <InfoItem
+                  label="注册日期"
+                  value={user?.createTime ? new Date(user.createTime).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  }) : '未知'}
+                />
+              </div>
+
+              <div className="bg-secondary/30 flex items-center gap-6 rounded-[2rem] p-6 apple-shadow">
+                <div className="bg-background/80 flex h-14 w-14 items-center justify-center rounded-2xl apple-shadow animate-shimmer">
+                  <Shield className="h-7 w-7 text-green-500" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-bold mb-0.5">账户安全盾</h4>
+                  <p className="text-foreground/40 text-sm font-medium">您的账户状态非常健康，所有安全验证均已通过。</p>
+                </div>
+              </div>
+            </section>
+          </div>
         </motion.div>
       </div>
     </motion.div>

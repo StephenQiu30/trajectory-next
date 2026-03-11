@@ -4,7 +4,7 @@ import * as React from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { FileUp, Loader2, Sparkles, Upload } from 'lucide-react'
+import { FileUp, Loader2, Sparkles, Upload, Cpu } from 'lucide-react'
 import { toast } from 'sonner'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -149,30 +149,28 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
   }
 
   return (
-    <Card className="rounded-[2rem] border-black/5 bg-white/60 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-black/50">
-      <CardHeader className="border-b border-black/5 bg-white/40 pb-6 dark:border-white/5 dark:bg-black/40">
-        <CardTitle className="text-2xl font-bold">分析配置</CardTitle>
-        <CardDescription className="text-base">告诉 AI 你的需求，并上传数据</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-8">
+    <div className="flex flex-col h-full w-full glass apple-shadow p-6 sm:p-8 transition-all duration-300 rounded-[2.5rem] border-none">
+      <div className="pb-8">
+        <h2 className="text-2xl font-bold tracking-tight">配置分析任务</h2>
+        <p className="text-sm text-foreground/60 mt-1.5 font-medium">设定图表目标并上传数据源，让 AI 为你洞察</p>
+      </div>
+      <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium text-gray-700 dark:text-gray-300">
-                    图表名称
-                  </FormLabel>
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-bold ml-1">图表名称</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="例如：2023年Q3销售汇总"
-                      className="h-12 rounded-xl border-black/10 bg-white/70 shadow-sm transition-all focus:bg-white focus:ring-2 focus:ring-[#0071e3]/20 dark:border-white/10 dark:bg-black/20 dark:focus:bg-black/40"
+                      className="h-12 rounded-2xl border-border/50 bg-secondary/30 px-4 text-sm transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="ml-1" />
                 </FormItem>
               )}
             />
@@ -181,21 +179,19 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="goal"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium text-gray-700 dark:text-gray-300">
-                    分析目标
-                  </FormLabel>
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-bold ml-1">分析目标</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="例如：分析各地区的销售总额及其占比情况，找出核心增长点。"
-                      className="min-h-[120px] resize-none rounded-xl border-black/10 bg-white/70 p-4 shadow-sm transition-all focus:bg-white focus:ring-2 focus:ring-[#0071e3]/20 dark:border-white/10 dark:bg-black/20 dark:focus:bg-black/40"
+                      placeholder="例如：分析各地区的销售总额及其占比情况"
+                      className="min-h-[100px] resize-none rounded-2xl border-border/50 bg-secondary/30 p-4 text-sm transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5 leading-relaxed"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="pt-1">
-                    描述越详细，AI 的分析就越准确。
+                  <FormDescription className="text-xs text-foreground/40 ml-1 font-medium">
+                    描述越详细，AI 生成越准确
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage className="ml-1" />
                 </FormItem>
               )}
             />
@@ -204,42 +200,38 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="chartType"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium text-gray-700 dark:text-gray-300">
-                    图表类型
-                  </FormLabel>
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-bold ml-1">图表类型</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="h-12 rounded-xl border-black/10 bg-white/70 shadow-sm transition-all hover:bg-white focus:ring-2 focus:ring-[#0071e3]/20 dark:border-white/10 dark:bg-black/20 dark:hover:bg-black/30">
-                        <SelectValue placeholder="选择 AI 生成的图表类型" />
+                      <SelectTrigger className="h-12 rounded-2xl border-border/50 bg-secondary/30 px-4 text-sm transition-all focus:ring-4 focus:ring-primary/5">
+                        <SelectValue placeholder="智能选择类型" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="rounded-xl shadow-lg">
+                    <SelectContent className="glass apple-shadow border-none rounded-2xl">
                       {Object.values(ChartTypeEnum).map(type => {
                         const iconConfig = chartIconMap[type]
                         const Icon = iconConfig?.icon
                         return (
-                          <SelectItem key={type} value={type} className="rounded-lg py-2.5">
-                            <div className="flex items-center gap-2">
+                          <SelectItem key={type} value={type} className="rounded-xl py-3 text-sm m-1 cursor-pointer transition-colors">
+                            <div className="flex items-center gap-3">
                               {Icon && <Icon className={`h-4 w-4 ${iconConfig.color}`} />}
-                              <span>{type}</span>
+                              <span className="font-medium">{type}</span>
                             </div>
                           </SelectItem>
                         )
                       })}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="ml-1" />
                 </FormItem>
               )}
             />
 
             {/* File Upload Area */}
             <div className="space-y-3 pt-2">
-              <FormLabel className="font-medium text-gray-700 dark:text-gray-300">
-                数据文件
-              </FormLabel>
-              <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-black/15 bg-white/50 p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#0071e3]/50 hover:bg-[#0071e3]/5 hover:shadow-lg dark:border-white/10 dark:bg-black/20 dark:hover:border-indigo-500/50 dark:hover:bg-indigo-500/10">
+              <FormLabel className="text-sm font-bold ml-1">数据源文件</FormLabel>
+              <div className="group relative overflow-hidden rounded-[2rem] border-2 border-dashed border-border/50 bg-secondary/20 p-8 text-center transition-all hover:border-primary hover:bg-primary/5">
                 <input
                   type="file"
                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -251,52 +243,48 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                   {file ? (
                     <motion.div
                       key="file"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="flex flex-col items-center gap-2"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex flex-col items-center gap-3"
                     >
-                      <div className="rounded-full bg-green-100 p-3 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                      <div className="rounded-2xl bg-primary/10 p-4 text-primary apple-shadow">
                         <FileUp className="h-6 w-6" />
                       </div>
-                      <span className="max-w-full truncate px-4 font-medium text-gray-900 dark:text-gray-100">
+                      <span className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap px-4 text-sm font-bold">
                         {file.name}
                       </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-foreground/40 font-medium">
                         {(file.size / 1024).toFixed(2)} KB
                       </span>
                     </motion.div>
                   ) : (
                     <motion.div
                       key="upload"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="flex flex-col items-center gap-2"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex flex-col items-center gap-3"
                     >
-                      <div className="rounded-full bg-blue-100 p-3 text-[#0071e3] transition-transform group-hover:scale-110 group-hover:bg-[#0071e3]/20 dark:bg-indigo-900/30 dark:text-indigo-400">
+                      <div className="rounded-2xl bg-primary/10 p-4 text-primary transition-transform group-hover:scale-110 duration-500 apple-shadow">
                         <Upload className="h-6 w-6" />
                       </div>
-                      <span className="font-medium text-gray-700 dark:text-gray-300">
-                        点击或拖拽上传数据
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        支持 Excel 或 CSV 文件
-                      </span>
+                      <span className="font-bold text-sm">拖拽或点击上传</span>
+                      <span className="text-xs text-foreground/40 font-medium">支持 .csv, .xlsx (最大 5MB)</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4 pt-4">
               <Button
                 type="submit"
                 disabled={isAnalyzing}
                 onClick={() => {
                   submitMode.current = 'sync'
                 }}
-                className="h-12 flex-1 rounded-xl bg-black text-lg text-white shadow-lg transition-all hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
+                className="h-14 w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold apple-shadow transition-all active:scale-[0.98]"
               >
                 {isAnalyzing && submitMode.current === 'sync' ? (
                   <>
@@ -306,10 +294,20 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                 ) : (
                   <>
                     <Sparkles className="mr-2 h-5 w-5" />
-                    同步分析
+                    开始智能生成
                   </>
                 )}
               </Button>
+
+              <div className="relative py-2">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-border/50" />
+                </div>
+                <div className="relative flex justify-center text-[10px] uppercase">
+                  <span className="bg-background px-3 text-foreground/40 font-bold tracking-widest">OR</span>
+                </div>
+              </div>
+
               <Button
                 type="submit"
                 disabled={isAnalyzing}
@@ -317,7 +315,7 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                   submitMode.current = 'async'
                 }}
                 variant="outline"
-                className="h-12 flex-1 rounded-xl border-2 bg-white/50 text-lg shadow-sm transition-all hover:bg-white/80 dark:bg-black/40 dark:hover:bg-black/60"
+                className="h-14 w-full rounded-2xl border-border/50 bg-secondary/30 font-bold hover:bg-secondary/50 transition-all active:scale-[0.98]"
               >
                 {isAnalyzing && submitMode.current === 'async' ? (
                   <>
@@ -326,15 +324,15 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-5 w-5" />
-                    异步分析
+                    <Cpu className="mr-2 h-5 w-5 text-primary" />
+                    后台异步处理
                   </>
                 )}
               </Button>
             </div>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

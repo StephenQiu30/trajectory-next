@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { UserRoleEnum } from '@/enums/UserRoleEnum'
 import type { RootState } from '@/store'
 import { UserAvatar } from '@/components/header/user-avatar'
 import { Button } from '@/components/ui/button'
@@ -166,39 +167,44 @@ export default function SettingsPage() {
 
   return (
     <motion.div
-      className="container mx-auto max-w-5xl space-y-8 py-8 md:py-12"
+      className="container mx-auto max-w-6xl space-y-10 py-32 md:py-40"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* 顶部导航 */}
+      {/* Background decoration */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <div className="absolute top-[30%] right-[10%] w-[35rem] h-[35rem] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-[30%] left-[10%] w-[30rem] h-[30rem] bg-primary/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+      </div>
+
       <motion.div
-        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between"
         variants={itemVariants}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <Link href="/user/profile">
             <Button
               variant="outline"
               size="icon"
-              className="border-border/40 bg-background/50 h-10 w-10 rounded-full backdrop-blur-sm"
+              className="glass apple-shadow h-14 w-14 rounded-full border-none transition-all hover:scale-110 active:scale-90"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-foreground text-3xl font-bold tracking-tight">个人设置</h1>
-            <p className="text-muted-foreground mt-1 text-base">管理您的账号信息与偏好</p>
+          <div className="space-y-1">
+            <h1 className="text-4xl font-bold tracking-tight">个人设置</h1>
+            <p className="text-foreground/40 text-sm font-bold uppercase tracking-widest">Account & Preferences</p>
           </div>
         </div>
         <AnimatePresence>
           {hasChanges && (
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
             >
-              <Badge className="bg-primary text-primary-foreground rounded-full px-4 py-1.5 text-sm font-medium shadow-sm">
+              <Badge className="bg-primary text-white rounded-full px-6 py-2 text-sm font-bold apple-shadow animate-pulse">
                 {changes.size} 项未保存更改
               </Badge>
             </motion.div>
@@ -206,19 +212,18 @@ export default function SettingsPage() {
         </AnimatePresence>
       </motion.div>
 
-      <div className="grid gap-8 lg:grid-cols-12">
-        {/* 左侧 - 预览与头像 (4cols) */}
+      <div className="grid gap-10 lg:grid-cols-12">
+        {/* Left - Avatar & Preview */}
         <motion.div className="lg:col-span-4" variants={itemVariants}>
-          <div className="border-border/40 bg-card/50 sticky top-24 overflow-hidden rounded-[2rem] border shadow-sm backdrop-blur-xl">
-            <div className="bg-secondary/30 h-32"></div>
-
-            <div className="relative -mt-16 px-6 pb-8 text-center">
-              <div className="group relative mx-auto mb-6 inline-block">
+          <div className="glass apple-shadow sticky top-24 overflow-hidden rounded-[2.5rem] border-none p-8">
+            <div className="flex flex-col items-center text-center">
+              <div className="group relative mb-8">
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors" />
                 <div className="relative">
                   <UserAvatar
                     user={{ ...user, ...formData }}
                     size="xl"
-                    className="border-background h-32 w-32 border-[6px] shadow-xl"
+                    className="h-40 w-40 border-8 border-background/50 shadow-2xl"
                   />
                   <input
                     type="file"
@@ -229,71 +234,61 @@ export default function SettingsPage() {
                   />
                   <Button
                     size="icon"
-                    className="bg-primary text-primary-foreground absolute -right-2 -bottom-2 h-10 w-10 rounded-full shadow-lg transition-transform hover:scale-110"
+                    className="absolute -right-2 -bottom-2 h-12 w-12 rounded-full bg-primary text-white apple-shadow transition-all hover:scale-110 active:scale-95"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
                   >
                     {uploading ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <Loader2 className="h-6 w-6 animate-spin" />
                     ) : (
-                      <Camera className="h-5 w-5" />
+                      <Camera className="h-6 w-6" />
                     )}
                   </Button>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold">{formData.userName || user.userName}</h3>
-                <p className="text-muted-foreground text-sm font-medium">
-                  {user.userRole === 'admin' ? '管理员' : '普通用户'}
-                </p>
-                <div className="bg-secondary/30 mt-4 rounded-2xl p-4">
-                  <p className="text-muted-foreground text-xs leading-relaxed">
-                    "{formData.userProfile || '还没写个人简介...'}"
+              <div className="space-y-4 w-full">
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">{formData.userName || user.userName}</h3>
+                  <p className="text-foreground/40 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    {user.userRole === UserRoleEnum.ADMIN ? 'Administrator' : 'Explorer'}
                   </p>
+                </div>
+                <div className="bg-secondary/20 rounded-3xl p-6 italic text-sm font-medium text-foreground/60 border border-white/10">
+                  &quot;{formData.userProfile || '这个人很懒，什么都没写...'}&quot;
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* 右侧 - 编辑区域 (8cols) */}
+        {/* Right - Form Details */}
         <motion.div className="lg:col-span-8" variants={itemVariants}>
-          <form onSubmit={handleSubmit}>
-            <Tabs defaultValue="profile" className="space-y-6">
-              <TabsList className="bg-secondary/20 h-auto w-full justify-start rounded-full p-1">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <Tabs defaultValue="profile" className="w-full space-y-8">
+              <TabsList className="bg-secondary/30 h-16 w-full justify-start rounded-3xl p-1.5 backdrop-blur-xl border border-white/10">
                 <TabsTrigger
                   value="profile"
-                  className="data-[state=active]:bg-background rounded-full px-6 py-2.5 data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-background data-[state=active]:text-primary rounded-2xl px-8 py-3 text-sm font-bold transition-all data-[state=active]:apple-shadow flex-1"
                 >
                   档案信息
                 </TabsTrigger>
                 <TabsTrigger
                   value="contact"
-                  className="data-[state=active]:bg-background rounded-full px-6 py-2.5 data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-background data-[state=active]:text-primary rounded-2xl px-8 py-3 text-sm font-bold transition-all data-[state=active]:apple-shadow flex-1"
                 >
                   联系方式
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="profile" className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="border-border/40 bg-card/50 rounded-[2rem] border p-8 shadow-sm backdrop-blur-xl"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold">基本资料</h3>
-                    <p className="text-muted-foreground text-sm">这些信息将公开显示</p>
-                  </div>
-
-                  <div className="space-y-8">
+              <TabsContent value="profile" className="space-y-8 outline-none mt-0">
+                <div className="glass apple-shadow rounded-[2.5rem] border-none p-10 space-y-10">
+                   <div className="space-y-8">
                     <FormField
                       label="用户昵称"
                       value={formData.userName}
                       onChange={handleInputChange('userName')}
-                      placeholder="请输入昵称"
+                      placeholder="你的灵感代号"
                       required
                       isActive={activeField === 'userName'}
                       onFocus={() => setActiveField('userName')}
@@ -302,47 +297,37 @@ export default function SettingsPage() {
                     />
 
                     <div className="space-y-3">
-                      <Label className="text-muted-foreground text-sm font-medium tracking-wider uppercase">
+                      <Label className="text-foreground/40 flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase ml-1">
                         个人简介
                         {changes.has('userProfile') && (
-                          <span className="text-primary ml-2 text-xs">•</span>
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                         )}
                       </Label>
                       <Textarea
                         value={formData.userProfile}
                         onChange={handleInputChange('userProfile')}
-                        placeholder="向世界介绍你自己..."
-                        className="border-border/40 bg-background/50 focus:border-primary/50 min-h-[140px] resize-none rounded-2xl p-4 text-base focus:ring-0"
+                        placeholder="关于你的故事..."
+                        className="bg-secondary/30 border-none focus:bg-secondary/50 min-h-[160px] resize-none rounded-3xl p-6 text-base transition-all focus:ring-2 focus:ring-primary/20 apple-shadow"
                         onFocus={() => setActiveField('userProfile')}
                         onBlur={() => setActiveField(null)}
                       />
-                      <div className="text-muted-foreground text-right text-xs">
-                        {formData.userProfile.length}/200
+                      <div className="text-foreground/20 text-right text-xs font-bold font-mono">
+                        {formData.userProfile.length} / 200
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </TabsContent>
 
-              <TabsContent value="contact" className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="border-border/40 bg-card/50 rounded-[2rem] border p-8 shadow-sm backdrop-blur-xl"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold">隐私与安全</h3>
-                    <p className="text-muted-foreground text-sm">管理您的联系方式</p>
-                  </div>
-
+              <TabsContent value="contact" className="space-y-8 outline-none mt-0">
+                <div className="glass apple-shadow rounded-[2.5rem] border-none p-10 space-y-10">
                   <div className="space-y-8">
                     <FormField
                       label="电子邮箱"
                       type="email"
                       value={formData.userEmail}
                       onChange={handleInputChange('userEmail')}
-                      placeholder="example@mail.com"
+                      placeholder="discovery@example.com"
                       isActive={activeField === 'userEmail'}
                       onFocus={() => setActiveField('userEmail')}
                       onBlur={() => setActiveField(null)}
@@ -353,49 +338,49 @@ export default function SettingsPage() {
                       type="tel"
                       value={formData.userPhone}
                       onChange={handleInputChange('userPhone')}
-                      placeholder="未绑定"
+                      placeholder="未关联安全手机"
                       isActive={activeField === 'userPhone'}
                       onFocus={() => setActiveField('userPhone')}
                       onBlur={() => setActiveField(null)}
                       hasChanged={changes.has('userPhone')}
                     />
                   </div>
-                </motion.div>
+                </div>
               </TabsContent>
             </Tabs>
 
-            {/* 消息回显 */}
+            {/* Response Message */}
             <AnimatePresence>
               {message && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className={`mt-6 rounded-2xl border p-4 text-sm font-medium ${
+                  exit={{ opacity: 0, y: 20 }}
+                  className={`rounded-3xl border-none p-6 text-sm font-bold apple-shadow ${
                     message.type === 'success'
-                      ? 'border-green-500/20 bg-green-500/10 text-green-600'
-                      : 'border-red-500/20 bg-red-500/10 text-red-600'
+                      ? 'bg-green-500/10 text-green-500'
+                      : 'bg-destructive/10 text-destructive'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     {message.type === 'success' ? (
-                      <CheckCircle2 className="h-5 w-5" />
+                      <div className="bg-green-500/20 p-2 rounded-full"><CheckCircle2 className="h-5 w-5" /></div>
                     ) : (
-                      <Shield className="h-5 w-5" />
+                      <div className="bg-destructive/20 p-2 rounded-full"><Shield className="h-5 w-5" /></div>
                     )}
-                    <span>{message.text}</span>
-                    <button type="button" className="ml-auto" onClick={() => setMessage(null)}>
-                      <X className="h-4 w-4 opacity-50" />
+                    <span className="flex-1">{message.text}</span>
+                    <button type="button" onClick={() => setMessage(null)} className="hover:scale-110 transition-transform">
+                      <X className="h-5 w-5 opacity-40" />
                     </button>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* 操作条 */}
-            <div className="mt-8 flex items-center justify-end gap-4">
+            {/* Action Bar */}
+            <div className="flex items-center justify-end gap-6 pt-4">
               <Link href="/user/profile">
-                <Button variant="ghost" className="rounded-full px-6" type="button">
+                <Button variant="ghost" className="rounded-2xl px-10 h-14 font-bold text-foreground/40 hover:text-foreground transition-all" type="button">
                   取消
                 </Button>
               </Link>
@@ -403,12 +388,12 @@ export default function SettingsPage() {
                 type="submit"
                 size="lg"
                 disabled={loading || !hasChanges}
-                className="rounded-full px-8 shadow-lg"
+                className="rounded-2xl bg-primary text-white px-12 h-14 font-bold apple-shadow transition-all active:scale-95 disabled:opacity-40"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    保存中
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    正在同步
                   </>
                 ) : (
                   '保存更改'
@@ -430,7 +415,6 @@ function FormField({
   onChange,
   placeholder,
   required = false,
-  isActive,
   onFocus,
   onBlur,
   hasChanged,
@@ -447,10 +431,10 @@ function FormField({
   hasChanged?: boolean
 }) {
   return (
-    <div className="space-y-2">
-      <Label className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wider uppercase">
+    <div className="space-y-4">
+      <Label className="text-foreground/40 flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase ml-1">
         {label}
-        {hasChanged && <span className="bg-primary h-1.5 w-1.5 rounded-full" />}
+        {hasChanged && <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />}
       </Label>
       <Input
         type={type}
@@ -460,7 +444,7 @@ function FormField({
         required={required}
         onFocus={onFocus}
         onBlur={onBlur}
-        className="border-border/40 bg-background/50 focus:border-primary/50 focus:bg-background h-12 rounded-xl px-4 transition-all focus:ring-0"
+        className="bg-secondary/30 border-none focus:bg-secondary/50 h-14 rounded-2xl px-6 text-base transition-all focus:ring-2 focus:ring-primary/20 apple-shadow"
       />
     </div>
   )

@@ -4,68 +4,26 @@ import * as React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ReactECharts from 'echarts-for-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Cpu, FileSearch, Sparkles, Trash2, TrendingUp } from 'lucide-react'
-
-// Simple markdown component using tailwind prose
-const MarkdownViewer = ({ content }: { content: string }) => {
-  // A very basic markdown render for the AI insights.
-  // We'll replace headings, bold text, and lists with simple styled HTML.
-  const createMarkup = (text: string) => {
-    let html = text
-      .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-5 mb-3">$1</h2>')
-      .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>')
-      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-      .replace(
-        /^\> (.*$)/gim,
-        '<blockquote class="border-l-4 border-gray-300 pl-4 my-2 text-gray-600 italic">$1</blockquote>'
-      )
-      .replace(/\n/gim, '<br/>')
-
-    return { __html: html }
-  }
-
-  return (
-    <div
-      className="prose prose-slate dark:prose-invert prose-p:leading-relaxed prose-a:text-blue-600 max-w-none font-medium"
-      dangerouslySetInnerHTML={createMarkup(content)}
-    />
-  )
-}
+import { MarkdownRender } from '@/components/markdown/markdown-render'
+import { Cpu, FileSearch, Sparkles, Trash2, TrendingUp, BarChart2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
   if (!data) {
     return (
-      <Card className="group relative h-full min-h-[500px] w-full overflow-hidden rounded-[2rem] border-black/5 bg-white/60 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-black/50">
-        <div className="relative z-10 flex h-full flex-col items-center justify-center p-12 text-center">
-          <div className="relative mb-8">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 flex h-24 w-24 items-center justify-center rounded-3xl border border-black/5 bg-white shadow-xl dark:border-white/10 dark:bg-black/40"
-            >
-              <FileSearch className="h-10 w-10 text-[#0071e3]" />
-            </motion.div>
-
-            {/* Minimal static decorations instead of animations */}
-            <div className="absolute -top-4 -right-6 flex h-10 w-10 rotate-[15deg] items-center justify-center rounded-2xl border border-black/5 bg-white/80 shadow-md backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
-              <TrendingUp className="h-5 w-5 text-gray-400" />
-            </div>
-            <div className="absolute -bottom-4 -left-6 flex h-12 w-12 -rotate-[10deg] items-center justify-center rounded-2xl border border-black/5 bg-white/80 shadow-md backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
-              <Cpu className="h-6 w-6 text-gray-400" />
-            </div>
+      <div className="flex h-full min-h-[500px] w-full flex-col items-center justify-center glass apple-shadow rounded-[2.5rem] border-none">
+        <div className="flex flex-col items-center justify-center p-10 text-center space-y-6">
+          <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center apple-shadow animate-float">
+            <FileSearch className="h-10 w-10 text-primary" />
           </div>
-
-          <h3 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-gray-100">
-            等待数据注入
-          </h3>
-          <p className="max-w-md text-lg leading-relaxed font-medium text-gray-500/90 dark:text-gray-400">
-            左侧配置分析目标并上传数据。AI 引擎将自动构建清晰、专业的图表信息。
-          </p>
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold tracking-tight">等待分析数据</h3>
+            <p className="max-w-md text-foreground/60 font-medium leading-relaxed">
+              在左侧面板配置您的分析需求并上传数据文件，数据洞察将在此呈现。
+            </p>
+          </div>
         </div>
-      </Card>
+      </div>
     )
   }
 
@@ -78,157 +36,174 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
         chartOption = new Function('return ' + data.genChart)()
       }
 
-      // Enhance chart style to match Apple aesthetic deeply
-      const appleStyle = {
+      const biStyle = {
         backgroundColor: 'transparent',
         textStyle: {
-          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
         },
         tooltip: {
           ...chartOption.tooltip,
-          backgroundColor: 'rgba(255, 255, 255, 0.85)',
-          borderColor: 'rgba(0,0,0,0.05)',
-          textStyle: { color: '#1a1a1e', fontWeight: 500 },
-          borderRadius: 12,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderColor: 'transparent',
+          textStyle: { color: '#000', fontSize: 14, fontWeight: 600 },
+          borderRadius: 16,
           padding: [12, 16],
-          boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-          backdropFilter: 'blur(20px)',
-          extraCssText: 'backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);',
+          shadowBlur: 20,
+          shadowColor: 'rgba(0, 0, 0, 0.1)',
         },
         grid: {
           ...chartOption.grid,
           top: 80,
-          bottom: 50,
-          left: 60,
-          right: 40,
+          bottom: 40,
+          left: 50,
+          right: 30,
           containLabel: true,
-          borderColor: 'transparent',
-          show: false, // remove outer grid borders
         },
-        // Auto-smooth line charts and round bar charts
         series: (chartOption.series || []).map((s: any) => {
           const newSeries = { ...s }
           if (newSeries.type === 'line') {
-            newSeries.smooth = true // Apple loves smooth curves
-            newSeries.symbolSize = 6
-            newSeries.itemStyle = { ...newSeries.itemStyle, borderWidth: 2 }
+            newSeries.smooth = true
+            newSeries.symbolSize = 8
+            newSeries.lineStyle = { width: 4 }
+            newSeries.areaStyle = {
+              color: {
+                type: 'linear',
+                x: 0, y: 0, x2: 0, y2: 1,
+                colorStops: [{ offset: 0, color: 'rgba(0, 102, 255, 0.1)' }, { offset: 1, color: 'rgba(0, 102, 255, 0)' }]
+              }
+            }
           }
           if (newSeries.type === 'bar') {
-            newSeries.itemStyle = { ...newSeries.itemStyle, borderRadius: [4, 4, 0, 0] } // Rounded top corners for bars
+            newSeries.itemStyle = { borderRadius: [8, 8, 4, 4] }
           }
           return newSeries
         }),
-        xAxis: chartOption.xAxis
-          ? (Array.isArray(chartOption.xAxis) ? chartOption.xAxis : [chartOption.xAxis]).map(
-              (x: any) => ({
-                ...x,
-                axisLine: { show: false }, // Hide solid axis line
-                axisTick: { show: false }, // Hide ticks
-                splitLine: { show: false },
-                axisLabel: { color: '#8e8e93', margin: 16 }, // Apple gray
-              })
-            )
-          : undefined,
-        yAxis: chartOption.yAxis
-          ? (Array.isArray(chartOption.yAxis) ? chartOption.yAxis : [chartOption.yAxis]).map(
-              (y: any) => ({
-                ...y,
-                axisLine: { show: false },
-                axisTick: { show: false },
-                splitLine: {
-                  show: true,
-                  lineStyle: { color: 'rgba(0,0,0,0.04)', type: 'dashed' }, // Very faint split lines
-                },
-                axisLabel: { color: '#8e8e93' },
-              })
-            )
-          : undefined,
       }
 
-      chartOption = { ...chartOption, ...appleStyle }
+      chartOption = { ...chartOption, ...biStyle }
     }
   } catch (error) {
     console.error('Failed to parse chart options:', error)
   }
 
   return (
-    <div className="grid min-h-[500px] gap-8 pb-10 md:min-h-[600px] lg:grid-cols-12">
-      {/* Chart Card */}
+    <div className="flex h-full w-full flex-col gap-10">
       <AnimatePresence mode="wait">
         <motion.div
-          key={`chart-${data.id}`}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-8"
+          key={`content-${data.id}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-10"
         >
-          <Card className="flex h-full flex-col overflow-hidden rounded-[2rem] border-black/5 bg-white/70 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-black/50">
-            <CardHeader className="border-b border-black/5 bg-white/40 px-8 py-6 dark:border-white/5 dark:bg-black/40">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-3 text-3xl font-bold">
-                    <TrendingUp className="h-8 w-8 text-[#0071e3]" />
-                    {data.name || '智能分析视图'}
-                  </CardTitle>
-                  <p className="text-muted-foreground mt-2 text-base">
-                    图表类型: <span className="text-foreground font-medium">{data.chartType}</span>
-                  </p>
-                </div>
+          {/* Header & Metadata Summary */}
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-br from-foreground to-foreground/40 bg-clip-text text-transparent">
+                {data.name || '智能分析视图'}
+              </h2>
+              <div className="flex items-center gap-2 text-[11px] font-bold text-foreground/30 uppercase tracking-[0.2em]">
+                <Sparkles className="h-3 w-3 text-primary" />
+                <span>AI Generated Analysis Report</span>
               </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col p-8">
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {[
+                { label: '分析规格', value: data.chartType || '标准', icon: BarChart2, color: 'text-blue-500' },
+                { label: '执行日期', value: data.createTime ? new Date(data.createTime).toLocaleDateString() : '今日', icon: TrendingUp, color: 'text-emerald-500' },
+                { label: '处理引擎', value: 'SmartCore v2', icon: Cpu, color: 'text-purple-500' },
+              ].map((item, i) => (
+                <div key={i} className="glass apple-shadow p-5 rounded-[2rem] flex items-center gap-4 border-none bg-white/5 dark:bg-black/20">
+                  <div className={cn("p-3 rounded-2xl bg-white/50 dark:bg-black/50 apple-shadow", item.color)}>
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">{item.label}</p>
+                    <p className="text-sm font-bold text-foreground/80">{item.value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Analysis Goal */}
+          <div className="glass apple-shadow p-8 rounded-[2.5rem] border-none bg-primary/5 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
+              <Sparkles className="h-32 w-32 text-primary" />
+            </div>
+            <div className="relative z-10 flex flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-primary/10">
+                  <FileSearch className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold tracking-tight">分析目标</h3>
+              </div>
+              <p className="text-lg font-medium text-foreground/70 leading-relaxed italic pr-12">
+                "{data.goal || '未设置具体的分析目标，正在以全局视角为您解读数据...'}"
+              </p>
+            </div>
+          </div>
+
+          {/* Chart Section */}
+          <div className="glass apple-shadow rounded-[3rem] border-none overflow-hidden bg-white/5 dark:bg-black/5">
+            <div className="px-8 py-6 border-b border-border/50 flex align-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500">
+                  <BarChart2 className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold tracking-tight">交互式数据实验室</h3>
+              </div>
+            </div>
+            <div className="p-8">
               {data.status === 'failed' ? (
-                <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-red-200 bg-red-50/50 dark:border-red-900/30 dark:bg-red-900/10">
-                  <Trash2 className="mb-4 h-12 w-12 text-red-400 opacity-80" />
-                  <p className="text-lg font-medium text-red-600 dark:text-red-400">分析失败</p>
-                  <p className="text-muted-foreground mt-2 max-w-sm text-center">
-                    AI 在处理这批数据时遇到了困难，请重试或检查你的数据文件和目标描述是否清晰。
-                  </p>
+                <div className="flex min-h-[450px] flex-col items-center justify-center rounded-[2.5rem] bg-destructive/5 space-y-4 p-12 border border-destructive/10">
+                  <Trash2 className="h-12 w-12 text-destructive" />
+                  <div className="text-center space-y-1">
+                    <p className="text-xl font-bold text-destructive">分析失败</p>
+                    <p className="text-sm text-destructive/60 font-medium">AI 处理数据异常，请重试。</p>
+                  </div>
                 </div>
               ) : data.genChart ? (
-                <div className="w-full flex-1 mix-blend-multiply dark:mix-blend-normal">
+                <div className="min-h-[500px] w-full bg-white/30 dark:bg-black/30 rounded-[2rem] p-6 apple-shadow">
                   <ReactECharts
                     option={chartOption}
-                    style={{ height: '100%', minHeight: '400px', width: '100%' }}
-                    opts={{ renderer: 'svg' }} // Use SVG for crisper Apple-like rendering
+                    style={{ height: '450px', width: '100%' }}
+                    opts={{ renderer: 'svg' }}
                   />
                 </div>
               ) : (
-                <div className="flex h-full min-h-[400px] items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-900/50">
-                  <p className="text-muted-foreground flex items-center gap-2">
-                    <Cpu className="h-5 w-5 animate-pulse" />
-                    正在生成图表中...
-                  </p>
+                <div className="flex min-h-[500px] flex-1 items-center justify-center rounded-[2.5rem] bg-secondary/20">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative">
+                      <Cpu className="h-10 w-10 text-primary animate-pulse" />
+                      <Sparkles className="h-4 w-4 text-primary absolute -top-1 -right-1 animate-bounce" />
+                    </div>
+                    <p className="text-base font-bold text-foreground/40 tracking-widest uppercase">Synthesizing Visuals...</p>
+                  </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        </motion.div>
+            </div>
+          </div>
 
-        {/* AI Insight Card */}
-        {data.genResult && (
-          <motion.div
-            key={`insight-${data.id}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex lg:col-span-4"
-          >
-            <Card className="flex w-full flex-col overflow-hidden rounded-[2rem] border-[#0071e3]/10 bg-gradient-to-br from-[#0071e3]/5 to-indigo-500/5 shadow-xl backdrop-blur-xl dark:border-indigo-500/20 dark:from-indigo-950/30 dark:to-blue-900/10">
-              <CardHeader className="px-8 pt-8 pb-6">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold text-[#0071e3] dark:text-indigo-400">
-                  <Sparkles className="h-6 w-6" />
-                  AI 深度洞察
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col overflow-hidden px-8 pt-0 pb-8">
-                <div className="flex-1 overflow-y-auto rounded-[1.5rem] bg-white/80 p-6 shadow-sm ring-1 ring-black/5 backdrop-blur-md dark:bg-black/40 dark:ring-white/10">
-                  <MarkdownViewer content={data.genResult} />
+          {/* Insights Section */}
+          {data.genResult && (
+            <div className="glass apple-shadow p-10 rounded-[3rem] border-none bg-white/5 dark:bg-black/5">
+              <div className="mb-10 flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-[1.5rem] bg-amber-500/10 apple-shadow">
+                  <Sparkles className="h-7 w-7 text-amber-500" />
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
+                <div className="space-y-0.5">
+                  <h3 className="text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-500">AI 深度洞察</h3>
+                  <p className="text-[10px] font-bold text-amber-500/50 uppercase tracking-[0.2em]">Strategic Intelligence Analysis</p>
+                </div>
+              </div>
+              <div className="text-foreground/90 leading-loose prose dark:prose-invert max-w-none">
+                <MarkdownRender content={data.genResult} />
+              </div>
+            </div>
+          )}
+        </motion.div>
       </AnimatePresence>
     </div>
   )

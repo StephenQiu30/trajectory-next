@@ -1,115 +1,133 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
-import { AnalysisForm, ChartViewer, HistoryPanel } from '@/components/ai'
+import { AnimatePresence, motion } from 'framer-motion'
+import { AnalysisForm, ChartViewer, HistoryPanel, ChartDetailModal } from '@/components/ai'
 import { BarChart2, History as HistoryIcon, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function AiAnalyticsPage() {
   const [showHistory, setShowHistory] = React.useState(false)
   const [activeAnalysis, setActiveAnalysis] = React.useState<AiAPI.ChartVO | null>(null)
+  const [selectedHistoryChart, setSelectedHistoryChart] = React.useState<AiAPI.ChartVO | null>(null)
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   return (
-    <div className="bg-background flex min-h-screen flex-col font-sans selection:bg-[#0071e3]/20">
-      {/* Pure color background */}
-      <div className="pointer-events-none fixed inset-0 bg-[#fbfbfd] dark:bg-[#000000]" />
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500 pb-20">
+      {/* Chart Detail Modal */}
+      <ChartDetailModal
+        data={selectedHistoryChart}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
 
-      <main className="relative z-10 container mx-auto flex max-w-[1400px] flex-1 flex-col px-4 py-8 md:py-12">
-        {/* Apple-style Glass Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-8 flex flex-col justify-between gap-4 overflow-hidden rounded-[1.5rem] border border-black/5 bg-white/60 p-6 shadow-sm backdrop-blur-2xl md:flex-row md:items-center dark:border-white/5 dark:bg-black/40"
-        >
-          <div className="relative z-10 space-y-2">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-              <Wand2 className="h-3.5 w-3.5" />
-              <span>AIGC Analytics Engine</span>
-            </div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-gray-100">
-              让数据
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
-                灵动
-              </span>
-              起来。
-            </h1>
-            <p className="max-w-xl text-base text-gray-500 dark:text-gray-400">
-              无需复杂操作，上传数据，输入需求，AI 为您呈现可交互的深度数据洞察。
-            </p>
-          </div>
+      {/* Background ambient glow */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[10%] right-[5%] w-[40rem] h-[40rem] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-[10%] left-[5%] w-[35rem] h-[35rem] bg-primary/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+      </div>
 
-          <div className="relative z-10 flex shrink-0 items-center gap-3">
-            <Button
-              variant={showHistory ? 'default' : 'outline'}
-              className={`h-11 rounded-full px-6 text-sm font-medium transition-all ${
-                showHistory
-                  ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
-                  : 'border-black/5 bg-white/80 text-gray-700 shadow-sm backdrop-blur-md hover:bg-gray-50 dark:border-white/10 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20'
-              }`}
-              onClick={() => setShowHistory(!showHistory)}
-            >
-              {showHistory ? (
-                <>
-                  <BarChart2 className="mr-2 h-4 w-4" />
-                  返回工作台
-                </>
-              ) : (
-                <>
-                  <HistoryIcon className="mr-2 h-4 w-4" />
-                  历史分析库
-                </>
-              )}
-            </Button>
-          </div>
-        </motion.div>
-
-        <div className="flex-1">
+      <main className="relative z-10 mx-auto max-w-[1400px] px-6 pt-32 lg:px-12">
+        <AnimatePresence mode="wait">
           {showHistory ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              key="history-view"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col gap-10"
             >
-              <HistoryPanel
-                onSelectChart={chart => {
-                  setActiveAnalysis(chart)
-                  setShowHistory(false)
-                }}
-              />
+              <div className="flex items-center justify-between px-2">
+                <div className="space-y-1">
+                  <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
+                    <div className="p-2 rounded-2xl glass apple-shadow">
+                      <HistoryIcon className="h-7 w-7 text-primary" />
+                    </div>
+                    历史分析记录
+                  </h1>
+                  <p className="text-sm font-bold text-foreground/40 uppercase tracking-widest ml-1">
+                    AI Analysis History
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-12 w-12 rounded-full glass apple-shadow border-none transition-all duration-500 hover:scale-110 active:scale-95"
+                  onClick={() => setShowHistory(false)}
+                  title="返回分析配置"
+                >
+                  <BarChart2 className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="flex-1 min-h-[600px]">
+                <HistoryPanel
+                  onSelectChart={chart => {
+                    setSelectedHistoryChart(chart)
+                    setIsModalOpen(true)
+                  }}
+                />
+              </div>
             </motion.div>
           ) : (
-            <div className="grid gap-8 lg:grid-cols-12">
-              <motion.div
-                className="lg:col-span-4"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div className="sticky top-6">
+            <motion.div
+              key="main-view"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col gap-10 lg:flex-row"
+            >
+              {/* Left Sidebar */}
+              <aside className="w-full flex flex-col gap-8 lg:w-[460px] lg:shrink-0">
+                <div className="flex items-center justify-between px-2">
+                  <div className="space-y-1">
+                    <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
+                      <div className="p-2 rounded-2xl glass apple-shadow">
+                        <Wand2 className="h-7 w-7 text-primary" />
+                      </div>
+                      数据洞察
+                    </h1>
+                    <p className="text-sm font-bold text-foreground/40 uppercase tracking-widest ml-1">
+                      Data Insights Platform
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-12 w-12 rounded-full glass apple-shadow border-none transition-all duration-500 hover:scale-110 active:scale-95"
+                    onClick={() => setShowHistory(true)}
+                    title="查看历史记录"
+                  >
+                    <HistoryIcon className="h-5 w-5" />
+                  </Button>
+                </div>
+
+                <div className="flex-1">
                   <AnalysisForm
                     onAnalysisSuccess={setActiveAnalysis}
                     onAnalysisAsyncSuccess={() => {
                       setActiveAnalysis(null)
-                      setShowHistory(true)
                     }}
                   />
                 </div>
-              </motion.div>
+              </aside>
 
-              <motion.div
-                className="h-full lg:col-span-8"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              >
-                <ChartViewer data={activeAnalysis} />
-              </motion.div>
-            </div>
+              {/* Right Stage */}
+              <section className="flex-1 min-h-[600px]">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full"
+                >
+                  <ChartViewer data={activeAnalysis} />
+                </motion.div>
+              </section>
+            </motion.div>
           )}
-        </div>
+        </AnimatePresence>
       </main>
     </div>
   )

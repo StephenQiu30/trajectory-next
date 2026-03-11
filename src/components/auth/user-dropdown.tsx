@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { clearLoginUser } from '@/store/modules'
 import { userLogout } from '@/api/user/userController'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserRoleEnum } from '@/enums/UserRoleEnum'
 
 export function UserDropdown() {
   const dispatch = useAppDispatch()
@@ -58,7 +59,7 @@ export function UserDropdown() {
               {user?.userName || '未知用户'}
             </span>
             <span className="text-muted-foreground text-xs">
-              {user?.userRole === 'admin' ? '管理员' : '普通用户'}
+              {user?.userRole === UserRoleEnum.ADMIN ? '管理员' : '普通用户'}
             </span>
           </div>
         </div>

@@ -39,7 +39,7 @@ export function EmailLogin({
   emailForm,
   setEmailForm,
   onSendCode,
-  onSubmit, // We'll adapt this
+  onSubmit,
   onBack,
   loading,
   countdown,
@@ -55,7 +55,6 @@ export function EmailLogin({
     mode: 'onChange',
   })
 
-  // Sync form values with parent state
   React.useEffect(() => {
     const subscription = form.watch(value => {
       setEmailForm({
@@ -67,31 +66,30 @@ export function EmailLogin({
   }, [form, setEmailForm])
 
   const handleSubmit = (data: FormValues) => {
-    // Creating a synthetic event to match the original interface
     const syntheticEvent = {
-      preventDefault: () => {},
+      preventDefault: () => { },
     } as React.FormEvent
     onSubmit(syntheticEvent)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>邮箱地址</FormLabel>
+            <FormItem className="space-y-3">
+              <FormLabel className="text-sm font-bold ml-1">邮箱地址</FormLabel>
               <div className="group relative">
                 <FormControl>
                   <Input
                     placeholder="name@example.com"
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50/50 px-4 pl-11 transition-all group-hover:bg-white focus:border-[#0071e3] focus:bg-white focus:ring-4 focus:ring-[#0071e3]/10 dark:border-gray-700 dark:bg-gray-800/50 dark:focus:bg-gray-800"
+                    className="h-14 rounded-2xl border-border/50 bg-secondary/30 px-4 pl-12 text-[15px] transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
                     {...field}
                   />
                 </FormControl>
-                <Mail className="absolute top-3.5 left-3.5 h-5 w-5 text-gray-400 transition-colors group-focus-within:text-[#0071e3]" />
+                <Mail className="absolute top-4 left-4 h-5 w-5 text-foreground/40 transition-colors group-focus-within:text-primary" />
               </div>
               <FormMessage />
             </FormItem>
@@ -102,28 +100,28 @@ export function EmailLogin({
           control={form.control}
           name="code"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>验证码</FormLabel>
+            <FormItem className="space-y-3">
+              <FormLabel className="text-sm font-bold ml-1">验证码</FormLabel>
               <div className="flex gap-3">
                 <div className="group relative flex-1">
                   <FormControl>
                     <Input
                       placeholder="6位验证码"
                       maxLength={6}
-                      className="h-12 rounded-xl border-gray-200 bg-gray-50/50 px-4 pl-11 transition-all group-hover:bg-white focus:border-[#0071e3] focus:bg-white focus:ring-4 focus:ring-[#0071e3]/10 dark:border-gray-700 dark:bg-gray-800/50 dark:focus:bg-gray-800"
+                      className="h-14 rounded-2xl border-border/50 bg-secondary/30 px-4 pl-12 text-[15px] transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
                       {...field}
                     />
                   </FormControl>
-                  <CheckCircle2 className="absolute top-3.5 left-3.5 h-5 w-5 text-gray-400 transition-colors group-focus-within:text-[#0071e3]" />
+                  <CheckCircle2 className="absolute top-4 left-4 h-5 w-5 text-foreground/40 transition-colors group-focus-within:text-primary" />
                 </div>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={onSendCode}
                   disabled={loading || countdown > 0}
-                  className="h-12 min-w-[120px] shrink-0 rounded-xl border-2 border-gray-100 bg-white font-medium text-gray-600 hover:border-[#0071e3]/30 hover:bg-[#0071e3]/5 hover:text-[#0071e3] disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                  className="h-14 min-w-[120px] rounded-2xl border-border/50 bg-secondary/30 font-bold hover:bg-background hover:text-primary transition-all active:scale-[0.98]"
                 >
-                  {countdown > 0 ? `${countdown}s` : '发送验证码'}
+                  {countdown > 0 ? `${countdown}s` : '发送'}
                 </Button>
               </div>
               <FormMessage />
@@ -132,22 +130,22 @@ export function EmailLogin({
         />
 
         {error && (
-          <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+          <div className="flex items-center gap-2 rounded-xl bg-destructive/10 p-3 text-sm text-destructive font-medium">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
         {success && (
-          <div className="flex items-center gap-2 rounded-xl bg-green-50 p-3 text-sm text-green-600 dark:bg-green-900/20 dark:text-green-400">
+          <div className="flex items-center gap-2 rounded-xl bg-primary/10 p-3 text-sm text-primary font-medium">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{success}</span>
           </div>
         )}
 
-        <div className="flex flex-col gap-3 pt-2">
+        <div className="flex flex-col gap-3 pt-4">
           <Button
             type="submit"
-            className="h-12 w-full rounded-xl bg-gradient-to-r from-[#0071e3] to-[#0077ed] text-base font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:shadow-blue-500/30 active:scale-[0.98] disabled:opacity-70 dark:shadow-blue-900/30"
+            className="h-14 w-full rounded-2xl bg-primary hover:bg-primary/90 text-white text-[15px] font-bold apple-shadow transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
@@ -157,10 +155,10 @@ export function EmailLogin({
             type="button"
             variant="ghost"
             onClick={onBack}
-            className="h-10 w-full rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+            className="h-12 w-full rounded-2xl text-sm font-bold text-foreground/40 hover:text-foreground transition-all"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            返回方式选择
+            返回
           </Button>
         </div>
       </form>
