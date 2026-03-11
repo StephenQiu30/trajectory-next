@@ -109,10 +109,6 @@ declare namespace SearchAPI {
     id?: number
     /** 排除的用户ID */
     notId?: number
-    /** 微信开放平台UnionID */
-    wxUnionId?: string
-    /** 公众号OpenID */
-    mpOpenId?: string
     /** 用户昵称 */
     userName?: string
     /** 用户角色 */

@@ -199,29 +199,6 @@ export async function gitHubLoginCallback(
   })
 }
 
-/** 此处后端没有提供注释 GET /user/login/wx/qrcode */
-export async function getWxLoginQrCode(options?: { [key: string]: any }) {
-  return request<UserAPI.BaseResponseWxLoginResponse>('/user/login/wx/qrcode', {
-    method: 'GET',
-    ...(options || {}),
-  })
-}
-
-/** 检查微信登录状态 轮询检查微信扫码登录状态 GET /user/login/wx/status */
-export async function checkWxLoginStatus(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: UserAPI.checkWxLoginStatusParams,
-  options?: { [key: string]: any }
-) {
-  return request<UserAPI.BaseResponseLoginUserVO>('/user/login/wx/status', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  })
-}
-
 /** 用户注销 退出当前登录状态 POST /user/logout */
 export async function userLogout(options?: { [key: string]: any }) {
   return request<UserAPI.BaseResponseBoolean>('/user/logout', {

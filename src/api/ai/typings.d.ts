@@ -87,6 +87,17 @@ declare namespace AiAPI {
     userId?: number
   }
 
+  type ChartUpdateRequest = {
+    /** 图表ID */
+    id: number
+    /** 图表名称 */
+    name?: string
+    /** 分析目标 */
+    goal?: string
+    /** 图表类型 */
+    chartType?: string
+  }
+
   type ChartVO = {
     /** 图表ID */
     id?: number

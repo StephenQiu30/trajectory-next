@@ -84,22 +84,6 @@ declare namespace UserAPI {
     message?: string
   }
 
-  type BaseResponseWxLoginResponse = {
-    /** 状态码 */
-    code?: number
-    data?: WxLoginResponse
-    /** 消息 */
-    message?: string
-  }
-
-  type checkParams = {
-    request: WxMpCheckRequest
-  }
-
-  type checkWxLoginStatusParams = {
-    sceneId: string
-  }
-
   type DeleteRequest = {
     /** id */
     id: number
@@ -216,12 +200,6 @@ declare namespace UserAPI {
     emailVerified?: number
     /** 用户手机号 */
     userPhone?: string
-    /** 微信公众号 OpenID */
-    mpOpenId?: string
-    /** 微信 UnionID */
-    wxUnionId?: string
-    /** 微信开放平台 OpenID */
-    wxOpenId?: string
     /** GitHub ID */
     githubId?: string
     /** GitHub 账号 */
@@ -289,10 +267,6 @@ declare namespace UserAPI {
     id?: number
     /** 排除的用户ID */
     notId?: number
-    /** 微信开放平台UnionID */
-    wxUnionId?: string
-    /** 公众号OpenID */
-    mpOpenId?: string
     /** 用户昵称 */
     userName?: string
     /** 用户角色 */
@@ -345,23 +319,5 @@ declare namespace UserAPI {
     createTime?: string
     /** 更新时间 */
     updateTime?: string
-  }
-
-  type WxLoginResponse = {
-    /** 二维码 URL */
-    qrCodeUrl?: string
-    /** 场景 ID */
-    sceneId?: string
-  }
-
-  type WxMpCheckRequest = {
-    /** 时间戳 */
-    timestamp?: string
-    /** 随机数 */
-    nonce?: string
-    /** 签名 */
-    signature?: string
-    /** 随机字符串 */
-    echostr?: string
   }
 }
