@@ -27,7 +27,7 @@ export default function AiAnalyticsPage() {
         <div className="absolute bottom-[10%] left-[5%] w-[35rem] h-[35rem] bg-primary/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
-      <main className="relative z-10 mx-auto max-w-[1400px] px-6 pt-32 lg:px-12">
+      <main className="relative z-10 mx-auto max-w-[1400px] px-6 pt-12 lg:px-12">
         <AnimatePresence mode="wait">
           {showHistory ? (
             <motion.div

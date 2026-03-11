@@ -51,7 +51,7 @@ export default function DetailedAnalysisPage() {
         <div className="absolute top-[-10%] right-[20%] h-[50vw] w-[50vw] rounded-full bg-indigo-400/3 opacity-60 blur-[120px] filter" />
       </div>
 
-      <main className="relative z-10 container mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-4 pt-24 pb-8 md:px-8 md:pt-32 md:pb-12">
+      <main className="relative z-10 container mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-4 pt-12 pb-8 md:px-8 md:pt-12 md:pb-12">
         <div className="mb-6">
           <Button
             variant="ghost"
