@@ -89,7 +89,7 @@ export default function ProfilePage() {
 
   return (
     <motion.div
-      className="container mx-auto max-w-6xl space-y-12 py-32 md:py-40"
+      className="container mx-auto max-w-6xl space-y-12 py-12 md:py-20"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

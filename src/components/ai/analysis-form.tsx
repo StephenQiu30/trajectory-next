@@ -149,10 +149,10 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
   }
 
   return (
-    <div className="flex flex-col h-full w-full glass apple-shadow p-6 sm:p-8 transition-all duration-300 rounded-[2.5rem] border-none">
-      <div className="pb-8">
-        <h2 className="text-2xl font-bold tracking-tight">配置分析任务</h2>
-        <p className="text-sm text-foreground/60 mt-1.5 font-medium">设定图表目标并上传数据源，让 AI 为你洞察</p>
+    <div className="flex flex-col h-full w-full transition-all duration-300">
+      <div className="pb-6">
+        <h2 className="text-xl font-semibold tracking-tight">配置分析任务</h2>
+        <p className="text-xs text-muted-foreground/60 mt-1 font-medium">设定图表目标并上传数据源，让 AI 为你洞察</p>
       </div>
       <div>
         <Form {...form}>
@@ -161,16 +161,16 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-sm font-bold ml-1">图表名称</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-[13px] font-semibold text-muted-foreground/80 ml-0.5">图表名称</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="例如：2023年Q3销售汇总"
-                      className="h-12 rounded-2xl border-border/50 bg-secondary/30 px-4 text-sm transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
+                      className="h-11 rounded-xl border-border/40 bg-secondary/20 px-4 text-sm transition-all focus:border-primary/50 focus:bg-background focus:ring-0"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="ml-1" />
+                  <FormMessage className="ml-0.5 text-[11px]" />
                 </FormItem>
               )}
             />
@@ -179,19 +179,19 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="goal"
               render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-sm font-bold ml-1">分析目标</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-[13px] font-semibold text-muted-foreground/80 ml-0.5">分析目标</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="例如：分析各地区的销售总额及其占比情况"
-                      className="min-h-[100px] resize-none rounded-2xl border-border/50 bg-secondary/30 p-4 text-sm transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5 leading-relaxed"
+                      className="min-h-[90px] resize-none rounded-xl border-border/40 bg-secondary/20 p-4 text-sm transition-all focus:border-primary/50 focus:bg-background focus:ring-0 leading-relaxed"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-xs text-foreground/40 ml-1 font-medium">
+                  <FormDescription className="text-[11px] text-muted-foreground/40 ml-0.5 font-medium">
                     描述越详细，AI 生成越准确
                   </FormDescription>
-                  <FormMessage className="ml-1" />
+                  <FormMessage className="ml-0.5 text-[11px]" />
                 </FormItem>
               )}
             />
@@ -200,11 +200,11 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="chartType"
               render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-sm font-bold ml-1">图表类型</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-[13px] font-semibold text-muted-foreground/80 ml-0.5">图表类型</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="h-12 rounded-2xl border-border/50 bg-secondary/30 px-4 text-sm transition-all focus:ring-4 focus:ring-primary/5">
+                      <SelectTrigger className="h-11 rounded-xl border-border/40 bg-secondary/20 px-4 text-sm transition-all focus:ring-0">
                         <SelectValue placeholder="智能选择类型" />
                       </SelectTrigger>
                     </FormControl>
@@ -213,9 +213,9 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                         const iconConfig = chartIconMap[type]
                         const Icon = iconConfig?.icon
                         return (
-                          <SelectItem key={type} value={type} className="rounded-xl py-3 text-sm m-1 cursor-pointer transition-colors">
-                            <div className="flex items-center gap-3">
-                              {Icon && <Icon className={`h-4 w-4 ${iconConfig.color}`} />}
+                          <SelectItem key={type} value={type} className="rounded-xl py-2.5 text-sm m-1 cursor-pointer transition-colors">
+                            <div className="flex items-center gap-2.5">
+                              {Icon && <Icon className={`h-3.5 w-3.5 ${iconConfig.color}`} />}
                               <span className="font-medium">{type}</span>
                             </div>
                           </SelectItem>
@@ -223,15 +223,15 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                       })}
                     </SelectContent>
                   </Select>
-                  <FormMessage className="ml-1" />
+                  <FormMessage className="ml-0.5 text-[11px]" />
                 </FormItem>
               )}
             />
 
             {/* File Upload Area */}
-            <div className="space-y-3 pt-2">
-              <FormLabel className="text-sm font-bold ml-1">数据源文件</FormLabel>
-              <div className="group relative overflow-hidden rounded-[2rem] border-2 border-dashed border-border/50 bg-secondary/20 p-8 text-center transition-all hover:border-primary hover:bg-primary/5">
+            <div className="space-y-2 pt-1">
+              <FormLabel className="text-[13px] font-semibold text-muted-foreground/80 ml-0.5">数据源文件</FormLabel>
+              <div className="group relative overflow-hidden rounded-[1.5rem] border border-dashed border-border/60 bg-secondary/10 p-6 text-center transition-all hover:border-primary/40 hover:bg-primary/[0.02]">
                 <input
                   type="file"
                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -243,68 +243,68 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                   {file ? (
                     <motion.div
                       key="file"
-                      initial={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="flex flex-col items-center gap-3"
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      className="flex flex-col items-center gap-2"
                     >
-                      <div className="rounded-2xl bg-primary/10 p-4 text-primary apple-shadow">
-                        <FileUp className="h-6 w-6" />
+                      <div className="rounded-xl bg-primary/10 p-3 text-primary shadow-sm">
+                        <FileUp className="h-5 w-5" />
                       </div>
-                      <span className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap px-4 text-sm font-bold">
+                      <span className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap px-4 text-sm font-semibold">
                         {file.name}
                       </span>
-                      <span className="text-xs text-foreground/40 font-medium">
+                      <span className="text-[10px] text-muted-foreground/40 font-medium">
                         {(file.size / 1024).toFixed(2)} KB
                       </span>
                     </motion.div>
                   ) : (
                     <motion.div
                       key="upload"
-                      initial={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="flex flex-col items-center gap-3"
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      className="flex flex-col items-center gap-2"
                     >
-                      <div className="rounded-2xl bg-primary/10 p-4 text-primary transition-transform group-hover:scale-110 duration-500 apple-shadow">
-                        <Upload className="h-6 w-6" />
+                      <div className="rounded-xl bg-primary/10 p-3 text-primary transition-transform group-hover:scale-105 duration-300 shadow-sm">
+                        <Upload className="h-5 w-5" />
                       </div>
-                      <span className="font-bold text-sm">拖拽或点击上传</span>
-                      <span className="text-xs text-foreground/40 font-medium">支持 .csv, .xlsx (最大 5MB)</span>
+                      <span className="font-semibold text-sm">点击上传或拖拽文件</span>
+                      <span className="text-[10px] text-muted-foreground/40 font-medium whitespace-nowrap">支持 CSV, XLSX (最大 5MB)</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 pt-4">
+            <div className="flex flex-col gap-3 pt-4">
               <Button
                 type="submit"
                 disabled={isAnalyzing}
                 onClick={() => {
                   submitMode.current = 'sync'
                 }}
-                className="h-14 w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold apple-shadow transition-all active:scale-[0.98]"
+                className="h-11 w-full rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-sm transition-all active:scale-[0.98]"
               >
                 {isAnalyzing && submitMode.current === 'sync' ? (
                   <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    分析中...
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    正在生成
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-5 w-5" />
-                    开始智能生成
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    开始智能分析
                   </>
                 )}
               </Button>
 
-              <div className="relative py-2">
+              <div className="relative py-1">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border/50" />
+                  <span className="w-full border-t border-border/40" />
                 </div>
-                <div className="relative flex justify-center text-[10px] uppercase">
-                  <span className="bg-background px-3 text-foreground/40 font-bold tracking-widest">OR</span>
+                <div className="relative flex justify-center text-[9px] uppercase">
+                  <span className="bg-background px-2 text-muted-foreground/30 font-bold tracking-[0.2em]">OR</span>
                 </div>
               </div>
 
@@ -315,17 +315,17 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                   submitMode.current = 'async'
                 }}
                 variant="outline"
-                className="h-14 w-full rounded-2xl border-border/50 bg-secondary/30 font-bold hover:bg-secondary/50 transition-all active:scale-[0.98]"
+                className="h-11 w-full rounded-xl border-border/40 bg-secondary/20 font-semibold hover:bg-secondary/40 transition-all active:scale-[0.98]"
               >
                 {isAnalyzing && submitMode.current === 'async' ? (
                   <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    提交中...
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    正在提交
                   </>
                 ) : (
                   <>
-                    <Cpu className="mr-2 h-5 w-5 text-primary" />
-                    后台异步处理
+                    <Cpu className="mr-2 h-4 w-4 text-primary/70" />
+                    后台分析模式
                   </>
                 )}
               </Button>

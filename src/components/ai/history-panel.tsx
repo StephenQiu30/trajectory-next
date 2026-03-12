@@ -216,9 +216,10 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="h-full"
                   >
                     <Card
-                      className="group relative cursor-pointer overflow-hidden border-none bg-secondary/5 glass apple-shadow transition-all duration-700 hover:scale-[1.02] active:scale-[0.98] hover:bg-white/70 dark:hover:bg-white/10 rounded-[2.5rem]"
+                      className="group relative cursor-pointer overflow-hidden border-none bg-secondary/5 glass apple-shadow transition-all duration-700 hover:scale-[1.02] active:scale-[0.98] hover:bg-white/70 dark:hover:bg-white/10 rounded-[2.5rem] h-full flex flex-col"
                       onClick={() => onSelectChart(chart)}
                     >
                       {/* Ambient background glow on hover */}
@@ -226,8 +227,8 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-3xl" />
                       </div>
 
-                      <CardContent className="relative z-10 p-7">
-                        <div className="flex flex-col gap-6">
+                      <CardContent className="relative z-10 p-7 flex-1 flex flex-col">
+                        <div className="flex flex-col gap-6 flex-1">
                           <div className="flex items-start justify-between">
                             <div className={cn(
                               "flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl apple-shadow transition-all duration-700 group-hover:scale-110 group-hover:-rotate-3",
@@ -264,7 +265,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                             </div>
                           </div>
                           
-                          <div className="space-y-4">
+                          <div className="space-y-4 flex-1 flex flex-col">
                             <div className="space-y-1.5">
                               <h3 className="truncate text-xl font-bold text-foreground/90 group-hover:text-primary transition-colors tracking-tight leading-none">
                                 {chart.name || '未命名分析'}
@@ -274,13 +275,21 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                               </p>
                             </div>
 
-                            {chart.status === ChartStatusEnum.SUCCEED && chart.genResult && (
-                              <div className="rounded-2xl bg-primary/[0.03] p-4 text-[12px] font-medium text-foreground/60 line-clamp-2 italic leading-relaxed border border-primary/5 group-hover:bg-primary/[0.06] transition-colors">
-                                {chart.genResult.replace(/[#*`]/g, '').slice(0, 100)}...
-                              </div>
-                            )}
+                            <div className="flex-1">
+                              {chart.status === ChartStatusEnum.SUCCEED && chart.genResult ? (
+                                <div className="rounded-2xl bg-primary/[0.03] p-4 text-[12px] font-medium text-foreground/60 line-clamp-2 italic leading-relaxed border border-primary/5 group-hover:bg-primary/[0.06] transition-colors min-h-[72px]">
+                                  {chart.genResult.replace(/[#*`]/g, '').slice(0, 100)}...
+                                </div>
+                              ) : (
+                                <div className="min-h-[72px] flex items-center justify-center rounded-2xl border border-dashed border-foreground/5 bg-foreground/[0.02]">
+                                   <div className="flex flex-col items-center gap-1 opactiy-20">
+                                      <Sparkles className="h-4 w-4 text-foreground/20" />
+                                   </div>
+                                </div>
+                              )}
+                            </div>
                             
-                            <div className="flex items-center justify-between pt-2">
+                            <div className="flex items-center justify-between pt-2 mt-auto">
                               <div className="flex items-center gap-3 text-[10px] font-bold text-foreground/25 uppercase tracking-widest">
                                 <div className="flex items-center gap-1.5">
                                   <Clock className="h-3 w-3" />
