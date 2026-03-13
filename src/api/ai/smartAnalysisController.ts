@@ -52,6 +52,7 @@ export async function genChartByAi(
       ...params['chartGenRequest'],
     },
     data: formData,
+    requestType: 'form',
     ...(options || {}),
   })
 }
@@ -94,6 +95,7 @@ export async function genChartByAiAsync(
       ...params['chartGenRequest'],
     },
     data: formData,
+    requestType: 'form',
     ...(options || {}),
   })
 }
