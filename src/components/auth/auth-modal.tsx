@@ -156,19 +156,17 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="glass apple-shadow p-0 sm:max-w-[440px] rounded-[2.5rem] border-none overflow-hidden">
+      <DialogContent className="glass apple-shadow overflow-hidden rounded-[2.5rem] border-none p-0 sm:max-w-[440px]">
         <DialogHeader className="px-10 pt-12">
           <div className="flex flex-col items-center justify-center gap-6">
-            <Avatar className="h-20 w-20 apple-shadow">
+            <Avatar className="apple-shadow h-20 w-20">
               <AvatarImage src={user?.userAvatar} alt={user?.userName || '用户头像'} />
               <AvatarFallback className="bg-secondary">
-                <UserIcon className="h-10 w-10 text-foreground/40" />
+                <UserIcon className="text-foreground/40 h-10 w-10" />
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1.5 text-center">
-              <DialogTitle className="text-2xl font-bold tracking-tight">
-                {getTitle()}
-              </DialogTitle>
+              <DialogTitle className="text-2xl font-bold tracking-tight">{getTitle()}</DialogTitle>
               <DialogDescription className="text-foreground/60 font-medium">
                 {getDescription()}
               </DialogDescription>
@@ -200,12 +198,22 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </div>
         </div>
 
-        <div className="bg-secondary/50 px-10 py-6 text-center backdrop-blur-md border-t border-border/50">
-          <p className="text-xs text-foreground/40 font-medium">
+        <div className="bg-secondary/50 border-border/50 border-t px-10 py-6 text-center backdrop-blur-md">
+          <p className="text-foreground/40 text-xs font-medium">
             登录即代表您同意我们的
-            <a href="#" className="hover:text-primary mx-1 font-bold text-foreground transition-colors">服务条款</a>
+            <a
+              href="#"
+              className="hover:text-primary text-foreground mx-1 font-bold transition-colors"
+            >
+              服务条款
+            </a>
             和
-            <a href="#" className="hover:text-primary mx-1 font-bold text-foreground transition-colors">隐私政策</a>
+            <a
+              href="#"
+              className="hover:text-primary text-foreground mx-1 font-bold transition-colors"
+            >
+              隐私政策
+            </a>
           </p>
         </div>
       </DialogContent>

@@ -2,8 +2,8 @@
 
 import * as React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AnalysisForm, ChartViewer, HistoryPanel, ChartDetailModal } from '@/components/ai'
-import { BarChart2, History as HistoryIcon, Wand2, Loader2 } from 'lucide-react'
+import { AnalysisForm, ChartDetailModal, ChartViewer, HistoryPanel } from '@/components/ai'
+import { BarChart2, History as HistoryIcon, Loader2, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function AiAnalyticsPage() {
@@ -13,7 +13,7 @@ export default function AiAnalyticsPage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-500 pb-20">
+    <div className="bg-background text-foreground min-h-screen pb-20 transition-colors duration-500">
       {/* Chart Detail Modal */}
       <ChartDetailModal
         data={selectedHistoryChart}
@@ -22,13 +22,19 @@ export default function AiAnalyticsPage() {
       />
 
       {/* Background ambient glow - Subtler */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[5%] right-[10%] w-[30rem] h-[30rem] bg-primary/3 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[5%] left-[10%] w-[25rem] h-[25rem] bg-primary/3 rounded-full blur-[100px]" />
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="bg-primary/3 absolute top-[5%] right-[10%] h-[30rem] w-[30rem] rounded-full blur-[100px]" />
+        <div className="bg-primary/3 absolute bottom-[5%] left-[10%] h-[25rem] w-[25rem] rounded-full blur-[100px]" />
       </div>
 
       <main className="relative z-10 mx-auto max-w-7xl px-6 pt-8 lg:px-12">
-        <React.Suspense fallback={<div className="flex min-h-[400px] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+        <React.Suspense
+          fallback={
+            <div className="flex min-h-[400px] items-center justify-center">
+              <Loader2 className="text-primary h-8 w-8 animate-spin" />
+            </div>
+          }
+        >
           <AnimatePresence mode="wait">
             {showHistory ? (
               <motion.div
@@ -41,27 +47,27 @@ export default function AiAnalyticsPage() {
               >
                 <div className="flex items-center justify-between px-2">
                   <div className="space-y-1">
-                    <h1 className="flex items-center gap-4 text-4xl font-black tracking-tight italic uppercase">
-                      <div className="p-3 rounded-2xl glass apple-shadow">
-                        <HistoryIcon className="h-8 w-8 text-primary" />
+                    <h1 className="flex items-center gap-4 text-4xl font-black tracking-tight uppercase italic">
+                      <div className="glass apple-shadow rounded-2xl p-3">
+                        <HistoryIcon className="text-primary h-8 w-8" />
                       </div>
                       Archives
                     </h1>
-                    <p className="text-sm font-black text-foreground/20 uppercase tracking-[0.3em] ml-1">
+                    <p className="text-foreground/20 ml-1 text-sm font-black tracking-[0.3em] uppercase">
                       AI Analysis History
                     </p>
                   </div>
                   <Button
                     variant="outline"
                     size="icon"
-                    className="h-14 w-14 rounded-3xl glass apple-shadow border-none transition-all duration-500 hover:scale-110 active:scale-95 group"
+                    className="glass apple-shadow group h-14 w-14 rounded-3xl border-none transition-all duration-500 hover:scale-110 active:scale-95"
                     onClick={() => setShowHistory(false)}
                   >
-                    <BarChart2 className="h-6 w-6 group-hover:rotate-12 transition-transform" />
+                    <BarChart2 className="h-6 w-6 transition-transform group-hover:rotate-12" />
                   </Button>
                 </div>
 
-                <div className="flex-1 min-h-[700px]">
+                <div className="min-h-[700px] flex-1">
                   <HistoryPanel
                     onSelectChart={chart => {
                       setSelectedHistoryChart(chart)
@@ -79,33 +85,35 @@ export default function AiAnalyticsPage() {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-10"
               >
-                <div className="relative glass apple-shadow rounded-[2.5rem] px-8 py-10 border-none bg-white/40 dark:bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-8 overflow-hidden">
+                <div className="glass apple-shadow relative flex flex-col items-center justify-between gap-8 overflow-hidden rounded-[2.5rem] border-none bg-white/40 px-8 py-10 sm:flex-row dark:bg-black/20">
                   <div className="space-y-2">
                     <h1 className="flex items-center gap-4 text-4xl font-bold tracking-tight">
-                      <div className="p-3 rounded-2xl bg-primary/10">
-                        <Wand2 className="h-8 w-8 text-primary" />
+                      <div className="bg-primary/10 rounded-2xl p-3">
+                        <Wand2 className="text-primary h-8 w-8" />
                       </div>
                       Synthesis
                     </h1>
-                    <p className="text-xs font-semibold text-muted-foreground/50 uppercase tracking-[0.2em] ml-1">
+                    <p className="text-muted-foreground/50 ml-1 text-xs font-semibold tracking-[0.2em] uppercase">
                       Integrated AI Intelligence & Laboratory Stage
                     </p>
                   </div>
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-14 rounded-2xl glass apple-shadow border-none transition-all hover:bg-white/60 dark:hover:bg-black/40 active:scale-95 group px-8 gap-3"
+                    className="glass apple-shadow group h-14 gap-3 rounded-2xl border-none px-8 transition-all hover:bg-white/60 active:scale-95 dark:hover:bg-black/40"
                     onClick={() => setShowHistory(true)}
                   >
-                    <HistoryIcon className="h-5 w-5 text-primary/70 transition-transform group-hover:-rotate-12" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">View History</span>
+                    <HistoryIcon className="text-primary/70 h-5 w-5 transition-transform group-hover:-rotate-12" />
+                    <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
+                      View History
+                    </span>
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-[400px_1fr] gap-10 items-start">
+                <div className="grid grid-cols-1 items-start gap-10 xl:grid-cols-[400px_1fr]">
                   {/* Configuration Sidebar */}
                   <aside className="w-full">
-                    <div className="glass apple-shadow rounded-[2.5rem] p-10 bg-white/60 dark:bg-gray-950/60 border-none">
+                    <div className="glass apple-shadow rounded-[2.5rem] border-none bg-white/60 p-10 dark:bg-gray-950/60">
                       <AnalysisForm
                         onAnalysisSuccess={setActiveAnalysis}
                         onAnalysisAsyncSuccess={() => {
@@ -116,7 +124,7 @@ export default function AiAnalyticsPage() {
                   </aside>
 
                   {/* Laboratory Stage */}
-                  <section className="w-full min-h-[700px]">
+                  <section className="min-h-[700px] w-full">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}

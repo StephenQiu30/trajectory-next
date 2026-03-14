@@ -15,17 +15,17 @@ export function SiteHeader() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full glass border-b">
-      <div className="w-full max-w-7xl h-16 mx-auto flex items-center px-4 sm:px-6 transition-all duration-300">
-        <div className="flex-1 flex items-center gap-4">
+    <header className="glass fixed top-0 right-0 left-0 z-50 w-full border-b">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center px-4 transition-all duration-300 sm:px-6">
+        <div className="flex flex-1 items-center gap-4">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden hover:bg-transparent">
+              <Button variant="ghost" size="icon" className="hover:bg-transparent lg:hidden">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="glass border-none w-full max-w-xs overflow-y-auto">
+            <SheetContent side="left" className="glass w-full max-w-xs overflow-y-auto border-none">
               <MobileMenuContent onClose={() => setMobileMenuOpen(false)} />
             </SheetContent>
           </Sheet>
@@ -38,7 +38,7 @@ export function SiteHeader() {
           <Menus />
         </nav>
 
-        <div className="flex-1 flex items-center justify-end">
+        <div className="flex flex-1 items-center justify-end">
           <HeaderActions authModalOpen={authModalOpen} onAuthModalOpenChange={setAuthModalOpen} />
         </div>
       </div>

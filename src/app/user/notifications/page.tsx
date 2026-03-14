@@ -185,7 +185,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background/50">
+    <div className="bg-background/50 relative min-h-screen w-full overflow-hidden">
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 pt-12 pb-20 sm:px-8 xl:px-12">
         {/* Header - iOS style Large Title - Left Aligned */}
         <div className="mb-10 flex flex-col gap-6">

@@ -141,7 +141,16 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
 
           // 代码块
           pre: ({ children }) => <>{children}</>,
-          code: ({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode }) => {
+          code: ({
+            inline,
+            className,
+            children,
+            ...props
+          }: {
+            inline?: boolean
+            className?: string
+            children?: React.ReactNode
+          }) => {
             const match = /language-(\w+)/.exec(className || '')
             const language = match ? match[1] : 'text'
 
@@ -151,7 +160,7 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
             return (
               <code
                 className={cn(
-                  "rounded-md border border-zinc-200 bg-zinc-100 px-[0.35rem] py-[0.15rem] font-mono text-[13px] font-medium text-zinc-900 dark:border-transparent dark:bg-zinc-800/60 dark:text-zinc-200 [&::after]:!content-none [&::before]:!content-none",
+                  'rounded-md border border-zinc-200 bg-zinc-100 px-[0.35rem] py-[0.15rem] font-mono text-[13px] font-medium text-zinc-900 dark:border-transparent dark:bg-zinc-800/60 dark:text-zinc-200 [&::after]:!content-none [&::before]:!content-none',
                   className
                 )}
                 {...props}

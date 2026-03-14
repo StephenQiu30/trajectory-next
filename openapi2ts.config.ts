@@ -43,4 +43,3 @@ export default [
     serversPath: './src/api',
   },
 ]
-

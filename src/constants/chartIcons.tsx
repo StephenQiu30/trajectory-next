@@ -10,7 +10,10 @@ import {
 } from 'lucide-react'
 import { ChartTypeEnum } from '../enums/ChartTypeEnum'
 
-export const chartIconMap: Record<string, { icon: any; color: string; bgColor: string; label: string }> = {
+export const chartIconMap: Record<
+  string,
+  { icon: any; color: string; bgColor: string; label: string }
+> = {
   [ChartTypeEnum.LINE]: {
     icon: LineChart,
     color: 'text-blue-500',

@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { deleteChart, listMyChartVoByPage } from '@/api/ai/smartAnalysisController'
 import { ChartStatusEnum } from '@/enums/ChartTypeEnum'
 import { chartIconMap, getChartIcon } from '@/constants/chartIcons'
-import { Clock, Loader2, Trash2, ChevronRight, BarChart2, Search, Filter, Sparkles } from 'lucide-react'
+import { BarChart2, ChevronRight, Clock, Search, Sparkles, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface HistoryPanelProps {
@@ -91,11 +91,11 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
           size="sm"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
-          className="rounded-full glass apple-shadow border-none font-bold px-8 h-11 transition-all active:scale-95 hover:bg-white/50 dark:hover:bg-white/10"
+          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/10"
         >
           上一页
         </Button>
-        <div className="glass px-6 py-2 rounded-full text-foreground/40 font-bold text-sm border-none apple-shadow">
+        <div className="glass text-foreground/40 apple-shadow rounded-full border-none px-6 py-2 text-sm font-bold">
           {page} / {totalPages}
         </div>
         <Button
@@ -103,7 +103,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
           size="sm"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
-          className="rounded-full glass apple-shadow border-none font-bold px-8 h-11 transition-all active:scale-95 hover:bg-white/50 dark:hover:bg-white/10"
+          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/10"
         >
           下一页
         </Button>
@@ -112,9 +112,12 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
   }
 
   const HistorySkeleton = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {[...Array(pageSize)].map((_, i) => (
-        <div key={i} className="glass apple-shadow p-7 rounded-[2.5rem] space-y-7 border-none bg-white/5 dark:bg-black/20">
+        <div
+          key={i}
+          className="glass apple-shadow space-y-7 rounded-[2.5rem] border-none bg-white/5 p-7 dark:bg-black/20"
+        >
           <div className="flex items-start justify-between">
             <Skeleton className="h-16 w-16 rounded-3xl" />
             <Skeleton className="h-6 w-20 rounded-full" />
@@ -144,41 +147,41 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
   }, [charts, statusFilter])
 
   return (
-    <div className="flex flex-col h-full bg-transparent w-full space-y-8">
+    <div className="flex h-full w-full flex-col space-y-8 bg-transparent">
       {/* Search & Filter Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-2">
+      <div className="flex flex-col justify-between gap-6 px-2 lg:flex-row lg:items-center">
         <div className="space-y-1.5">
           <h2 className="text-3xl font-bold tracking-tight">历史记录</h2>
-          <p className="text-sm text-foreground/40 font-bold uppercase tracking-widest flex items-center gap-2">
+          <p className="text-foreground/40 flex items-center gap-2 text-sm font-bold tracking-widest uppercase">
             <Clock className="h-3 w-3" />
             Total {total} Analysis Reports
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <div className="relative group w-full sm:w-[300px]">
-             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/20 group-hover:text-primary/40 transition-colors" />
-             <Input
-               placeholder="搜索分析名称..."
-               value={searchName}
-               onChange={(e) => setSearchName(e.target.value)}
-               className="h-12 pl-11 pr-4 rounded-2xl glass apple-shadow border-none bg-white/40 dark:bg-black/20 focus-visible:ring-1 focus-visible:ring-primary/20 transition-all"
-             />
+        <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="group relative w-full sm:w-[300px]">
+            <Search className="text-foreground/20 group-hover:text-primary/40 absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 transition-colors" />
+            <Input
+              placeholder="搜索分析名称..."
+              value={searchName}
+              onChange={e => setSearchName(e.target.value)}
+              className="glass apple-shadow focus-visible:ring-primary/20 h-12 rounded-2xl border-none bg-white/40 pr-4 pl-11 transition-all focus-visible:ring-1 dark:bg-black/20"
+            />
           </div>
-          <div className="flex items-center glass p-1 rounded-[1.25rem] apple-shadow border-none bg-white/40 dark:bg-black/20">
+          <div className="glass apple-shadow flex items-center rounded-[1.25rem] border-none bg-white/40 p-1 dark:bg-black/20">
             {[
               { label: '全部', value: undefined },
               { label: '成功', value: ChartStatusEnum.SUCCEED },
               { label: '失败', value: 'failed' },
-            ].map((tab) => (
+            ].map(tab => (
               <button
                 key={tab.label}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  "px-5 py-2 rounded-xl text-xs font-bold transition-all duration-300",
+                  'rounded-xl px-5 py-2 text-xs font-bold transition-all duration-300',
                   statusFilter === tab.value
-                    ? "bg-white dark:bg-white/10 text-primary apple-shadow scale-[1.05]"
-                    : "text-foreground/30 hover:text-foreground/50"
+                    ? 'text-primary apple-shadow scale-[1.05] bg-white dark:bg-white/10'
+                    : 'text-foreground/30 hover:text-foreground/50'
                 )}
               >
                 {tab.label}
@@ -192,21 +195,21 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
         {loading && charts.length === 0 ? (
           <HistorySkeleton />
         ) : filteredCharts.length === 0 ? (
-          <div className="flex h-[500px] flex-col items-center justify-center rounded-[3rem] glass apple-shadow p-12 text-center space-y-6">
-            <div className="w-24 h-24 rounded-[2rem] bg-primary/5 flex items-center justify-center relative">
-              <BarChart2 className="h-12 w-12 text-primary/20" />
-              <Search className="h-6 w-6 text-primary/10 absolute -bottom-1 -right-1" />
+          <div className="glass apple-shadow flex h-[500px] flex-col items-center justify-center space-y-6 rounded-[3rem] p-12 text-center">
+            <div className="bg-primary/5 relative flex h-24 w-24 items-center justify-center rounded-[2rem]">
+              <BarChart2 className="text-primary/20 h-12 w-12" />
+              <Search className="text-primary/10 absolute -right-1 -bottom-1 h-6 w-6" />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-foreground/40 tracking-tight">暂无匹配记录</p>
-              <p className="max-w-xs text-sm text-foreground/30 font-medium leading-relaxed">
+              <p className="text-foreground/40 text-2xl font-bold tracking-tight">暂无匹配记录</p>
+              <p className="text-foreground/30 max-w-xs text-sm leading-relaxed font-medium">
                 尝试调整搜索词或筛选条件，或者立即开启一次新的数据洞察。
               </p>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-8 h-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+          <div className="flex h-full flex-col gap-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               <AnimatePresence mode="popLayout" initial={false}>
                 {filteredCharts.map((chart, index) => (
                   <motion.div
@@ -219,85 +222,105 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                     className="h-full"
                   >
                     <Card
-                      className="group relative cursor-pointer overflow-hidden border-none bg-secondary/5 glass apple-shadow transition-all duration-700 hover:scale-[1.02] active:scale-[0.98] hover:bg-white/70 dark:hover:bg-white/10 rounded-[2.5rem] h-full flex flex-col"
+                      className="group bg-secondary/5 glass apple-shadow relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[2.5rem] border-none transition-all duration-700 hover:scale-[1.02] hover:bg-white/70 active:scale-[0.98] dark:hover:bg-white/10"
                       onClick={() => onSelectChart(chart)}
                     >
                       {/* Ambient background glow on hover */}
-                      <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-3xl" />
+                      <div className="pointer-events-none absolute -inset-2 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+                        <div className="from-primary/10 absolute inset-0 bg-gradient-to-br via-transparent to-transparent blur-3xl" />
                       </div>
 
-                      <CardContent className="relative z-10 p-7 flex-1 flex flex-col">
-                        <div className="flex flex-col gap-6 flex-1">
+                      <CardContent className="relative z-10 flex flex-1 flex-col p-7">
+                        <div className="flex flex-1 flex-col gap-6">
                           <div className="flex items-start justify-between">
-                            <div className={cn(
-                              "flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl apple-shadow transition-all duration-700 group-hover:scale-110 group-hover:-rotate-3",
-                              chartIconMap[chart.chartType || '']?.bgColor || 'bg-secondary'
-                            )}>
-                              {chartIconMap[chart.chartType || '']
-                                ? getChartIcon(chart.chartType)
-                                : <BarChart2 className="h-8 w-8 text-primary" />
-                              }
+                            <div
+                              className={cn(
+                                'apple-shadow flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl transition-all duration-700 group-hover:scale-110 group-hover:-rotate-3',
+                                chartIconMap[chart.chartType || '']?.bgColor || 'bg-secondary'
+                              )}
+                            >
+                              {chartIconMap[chart.chartType || ''] ? (
+                                getChartIcon(chart.chartType)
+                              ) : (
+                                <BarChart2 className="text-primary h-8 w-8" />
+                              )}
                             </div>
-                            
+
                             <div className="flex items-center gap-2">
-                              <div className={cn(
-                                "flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest",
-                                chart.status === ChartStatusEnum.SUCCEED ? "bg-green-500/10 text-green-500" :
-                                chart.status === ChartStatusEnum.RUNNING ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
-                              )}>
-                                <div className={cn(
-                                  "h-1.5 w-1.5 rounded-full shrink-0",
-                                  chart.status === ChartStatusEnum.SUCCEED ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" :
-                                  chart.status === ChartStatusEnum.RUNNING ? "bg-primary shadow-[0_0_8px_rgba(0,102,255,0.6)]" : "bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.6)]"
-                                )} />
-                                {chart.status === ChartStatusEnum.SUCCEED ? 'Success' :
-                                 chart.status === ChartStatusEnum.RUNNING ? 'Analyzing' : 'Failed'}
+                              <div
+                                className={cn(
+                                  'flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase',
+                                  chart.status === ChartStatusEnum.SUCCEED
+                                    ? 'bg-green-500/10 text-green-500'
+                                    : chart.status === ChartStatusEnum.RUNNING
+                                      ? 'bg-primary/10 text-primary'
+                                      : 'bg-destructive/10 text-destructive'
+                                )}
+                              >
+                                <div
+                                  className={cn(
+                                    'h-1.5 w-1.5 shrink-0 rounded-full',
+                                    chart.status === ChartStatusEnum.SUCCEED
+                                      ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]'
+                                      : chart.status === ChartStatusEnum.RUNNING
+                                        ? 'bg-primary shadow-[0_0_8px_rgba(0,102,255,0.6)]'
+                                        : 'bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+                                  )}
+                                />
+                                {chart.status === ChartStatusEnum.SUCCEED
+                                  ? 'Success'
+                                  : chart.status === ChartStatusEnum.RUNNING
+                                    ? 'Analyzing'
+                                    : 'Failed'}
                               </div>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all duration-300"
-                                onClick={(e) => handleDelete(e, chart.id!)}
+                                className="hover:bg-destructive/10 hover:text-destructive h-8 w-8 rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
+                                onClick={e => handleDelete(e, chart.id!)}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
                           </div>
-                          
-                          <div className="space-y-4 flex-1 flex flex-col">
+
+                          <div className="flex flex-1 flex-col space-y-4">
                             <div className="space-y-1.5">
-                              <h3 className="truncate text-xl font-bold text-foreground/90 group-hover:text-primary transition-colors tracking-tight leading-none">
+                              <h3 className="text-foreground/90 group-hover:text-primary truncate text-xl leading-none font-bold tracking-tight transition-colors">
                                 {chart.name || '未命名分析'}
                               </h3>
-                              <p className="text-[12px] font-bold text-foreground/20 uppercase tracking-[0.1em]">
+                              <p className="text-foreground/20 text-[12px] font-bold tracking-[0.1em] uppercase">
                                 {chart.chartType || 'Standard Analysis'}
                               </p>
                             </div>
 
                             <div className="flex-1">
                               {chart.status === ChartStatusEnum.SUCCEED && chart.genResult ? (
-                                <div className="rounded-2xl bg-primary/[0.03] p-4 text-[12px] font-medium text-foreground/60 line-clamp-2 italic leading-relaxed border border-primary/5 group-hover:bg-primary/[0.06] transition-colors min-h-[72px]">
+                                <div className="bg-primary/[0.03] text-foreground/60 border-primary/5 group-hover:bg-primary/[0.06] line-clamp-2 min-h-[72px] rounded-2xl border p-4 text-[12px] leading-relaxed font-medium italic transition-colors">
                                   {chart.genResult.replace(/[#*`]/g, '').slice(0, 100)}...
                                 </div>
                               ) : (
-                                <div className="min-h-[72px] flex items-center justify-center rounded-2xl border border-dashed border-foreground/5 bg-foreground/[0.02]">
-                                   <div className="flex flex-col items-center gap-1 opactiy-20">
-                                      <Sparkles className="h-4 w-4 text-foreground/20" />
-                                   </div>
+                                <div className="border-foreground/5 bg-foreground/[0.02] flex min-h-[72px] items-center justify-center rounded-2xl border border-dashed">
+                                  <div className="opactiy-20 flex flex-col items-center gap-1">
+                                    <Sparkles className="text-foreground/20 h-4 w-4" />
+                                  </div>
                                 </div>
                               )}
                             </div>
-                            
-                            <div className="flex items-center justify-between pt-2 mt-auto">
-                              <div className="flex items-center gap-3 text-[10px] font-bold text-foreground/25 uppercase tracking-widest">
+
+                            <div className="mt-auto flex items-center justify-between pt-2">
+                              <div className="text-foreground/25 flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
                                 <div className="flex items-center gap-1.5">
                                   <Clock className="h-3 w-3" />
-                                  <span>{chart.createTime ? new Date(chart.createTime).toLocaleDateString() : ''}</span>
+                                  <span>
+                                    {chart.createTime
+                                      ? new Date(chart.createTime).toLocaleDateString()
+                                      : ''}
+                                  </span>
                                 </div>
                               </div>
-                              <div className="p-2 rounded-full glass bg-primary/5 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-1 group-hover:bg-primary/10">
-                                <ChevronRight className="h-4 w-4 text-primary" />
+                              <div className="glass bg-primary/5 group-hover:bg-primary/10 rounded-full p-2 opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100">
+                                <ChevronRight className="text-primary h-4 w-4" />
                               </div>
                             </div>
                           </div>

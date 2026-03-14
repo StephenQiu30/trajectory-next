@@ -21,14 +21,20 @@ export function Footer({
     <footer className={cn('bg-background text-foreground/60 py-16', className)}>
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-          <div className="flex flex-col items-center gap-2 md:items-start text-center md:text-left">
+          <div className="flex flex-col items-center gap-2 text-center md:items-start md:text-left">
             <p className="text-sm font-medium">
               &copy; {new Date().getFullYear()} {author}. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-6 text-[13px]">
-              <Link href="#" className="hover:text-foreground transition-colors">隐私政策</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">服务条款</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">联系我们</Link>
+              <Link href="#" className="hover:text-foreground transition-colors">
+                隐私政策
+              </Link>
+              <Link href="#" className="hover:text-foreground transition-colors">
+                服务条款
+              </Link>
+              <Link href="#" className="hover:text-foreground transition-colors">
+                联系我们
+              </Link>
               {icpNumber && (
                 <a
                   href="https://beian.miit.gov.cn/"
@@ -52,10 +58,7 @@ export function Footer({
               <Github className="h-5 w-5" />
               <span className="sr-only">GitHub</span>
             </Link>
-            <Link
-              href={email}
-              className="hover:text-foreground transition-colors"
-            >
+            <Link href={email} className="hover:text-foreground transition-colors">
               <Mail className="h-5 w-5" />
               <span className="sr-only">Email</span>
             </Link>

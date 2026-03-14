@@ -67,7 +67,7 @@ export function EmailLogin({
 
   const handleSubmit = (data: FormValues) => {
     const syntheticEvent = {
-      preventDefault: () => { },
+      preventDefault: () => {},
     } as React.FormEvent
     onSubmit(syntheticEvent)
   }
@@ -80,16 +80,16 @@ export function EmailLogin({
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-bold ml-1">邮箱地址</FormLabel>
+              <FormLabel className="ml-1 text-sm font-bold">邮箱地址</FormLabel>
               <div className="group relative">
                 <FormControl>
                   <Input
                     placeholder="name@example.com"
-                    className="h-14 rounded-2xl border-border/50 bg-secondary/30 px-4 pl-12 text-[15px] transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
+                    className="border-border/50 bg-secondary/30 focus:border-primary focus:bg-background focus:ring-primary/5 h-14 rounded-2xl px-4 pl-12 text-[15px] transition-all focus:ring-4"
                     {...field}
                   />
                 </FormControl>
-                <Mail className="absolute top-4 left-4 h-5 w-5 text-foreground/40 transition-colors group-focus-within:text-primary" />
+                <Mail className="text-foreground/40 group-focus-within:text-primary absolute top-4 left-4 h-5 w-5 transition-colors" />
               </div>
               <FormMessage />
             </FormItem>
@@ -101,25 +101,25 @@ export function EmailLogin({
           name="code"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-bold ml-1">验证码</FormLabel>
+              <FormLabel className="ml-1 text-sm font-bold">验证码</FormLabel>
               <div className="flex gap-3">
                 <div className="group relative flex-1">
                   <FormControl>
                     <Input
                       placeholder="6位验证码"
                       maxLength={6}
-                      className="h-14 rounded-2xl border-border/50 bg-secondary/30 px-4 pl-12 text-[15px] transition-all focus:border-primary focus:bg-background focus:ring-4 focus:ring-primary/5"
+                      className="border-border/50 bg-secondary/30 focus:border-primary focus:bg-background focus:ring-primary/5 h-14 rounded-2xl px-4 pl-12 text-[15px] transition-all focus:ring-4"
                       {...field}
                     />
                   </FormControl>
-                  <CheckCircle2 className="absolute top-4 left-4 h-5 w-5 text-foreground/40 transition-colors group-focus-within:text-primary" />
+                  <CheckCircle2 className="text-foreground/40 group-focus-within:text-primary absolute top-4 left-4 h-5 w-5 transition-colors" />
                 </div>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={onSendCode}
                   disabled={loading || countdown > 0}
-                  className="h-14 min-w-[120px] rounded-2xl border-border/50 bg-secondary/30 font-bold hover:bg-background hover:text-primary transition-all active:scale-[0.98]"
+                  className="border-border/50 bg-secondary/30 hover:bg-background hover:text-primary h-14 min-w-[120px] rounded-2xl font-bold transition-all active:scale-[0.98]"
                 >
                   {countdown > 0 ? `${countdown}s` : '发送'}
                 </Button>
@@ -130,13 +130,13 @@ export function EmailLogin({
         />
 
         {error && (
-          <div className="flex items-center gap-2 rounded-xl bg-destructive/10 p-3 text-sm text-destructive font-medium">
+          <div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-xl p-3 text-sm font-medium">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
         {success && (
-          <div className="flex items-center gap-2 rounded-xl bg-primary/10 p-3 text-sm text-primary font-medium">
+          <div className="bg-primary/10 text-primary flex items-center gap-2 rounded-xl p-3 text-sm font-medium">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{success}</span>
           </div>
@@ -145,7 +145,7 @@ export function EmailLogin({
         <div className="flex flex-col gap-3 pt-4">
           <Button
             type="submit"
-            className="h-14 w-full rounded-2xl bg-primary hover:bg-primary/90 text-white text-[15px] font-bold apple-shadow transition-all active:scale-[0.98]"
+            className="bg-primary hover:bg-primary/90 apple-shadow h-14 w-full rounded-2xl text-[15px] font-bold text-white transition-all active:scale-[0.98]"
             disabled={loading}
           >
             {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
@@ -155,7 +155,7 @@ export function EmailLogin({
             type="button"
             variant="ghost"
             onClick={onBack}
-            className="h-12 w-full rounded-2xl text-sm font-bold text-foreground/40 hover:text-foreground transition-all"
+            className="text-foreground/40 hover:text-foreground h-12 w-full rounded-2xl text-sm font-bold transition-all"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             返回

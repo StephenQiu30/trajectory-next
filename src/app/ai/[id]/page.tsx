@@ -63,7 +63,14 @@ export default function DetailedAnalysisPage() {
           </Button>
         </div>
 
-        <React.Suspense fallback={<div className="flex min-h-[50vh] flex-col items-center justify-center"><Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" /><p className="text-muted-foreground font-medium">正在加载深度洞察报告...</p></div>}>
+        <React.Suspense
+          fallback={
+            <div className="flex min-h-[50vh] flex-col items-center justify-center">
+              <Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" />
+              <p className="text-muted-foreground font-medium">正在加载深度洞察报告...</p>
+            </div>
+          }
+        >
           {loading ? (
             <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center">
               <Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" />
