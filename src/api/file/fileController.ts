@@ -40,7 +40,6 @@ export async function addFile(
       ...params['fileUploadRequest'],
     },
     data: formData,
-    requestType: 'form',
     ...(options || {}),
   })
 }

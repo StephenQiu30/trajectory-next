@@ -18,7 +18,7 @@ import {
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { UserRoleEnum } from '@/enums/UserRoleEnum'
-import { searchUserByPage } from '@/api/search/searchController'
+import { listUserVoByPage } from '@/api/user/userController'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -56,12 +56,12 @@ export default function UserDetailPage() {
     const fetchUser = async () => {
       setLoading(true)
       try {
-        // Use ES search to find user by ID as requested
-        const res = (await searchUserByPage({
+        // Use database list to find user by ID as requested
+        const res = (await listUserVoByPage({
           id: userId as any,
           current: 1,
           pageSize: 1,
-        })) as unknown as SearchAPI.BaseResponsePage
+        })) as unknown as UserAPI.BaseResponsePageUserVO
 
         if (res.code === 0 && res.data?.records && (res.data.records as any).length > 0) {
           setUser((res.data.records as any)[0])
