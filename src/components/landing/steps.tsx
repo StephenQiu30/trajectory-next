@@ -11,7 +11,7 @@ const steps = [
 
 export default function Steps() {
     return (
-        <section className="w-full py-24 md:py-32 relative overflow-hidden bg-secondary/30">
+        <section className="w-full py-24 md:py-32 relative overflow-hidden bg-muted/30">
             <div className="w-full max-w-7xl mx-auto px-6">
                 <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
                     <motion.h2

@@ -63,34 +63,36 @@ export default function DetailedAnalysisPage() {
           </Button>
         </div>
 
-        {loading ? (
-          <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center">
-            <Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" />
-            <p className="text-muted-foreground font-medium">正在加载深度洞察报告...</p>
-          </div>
-        ) : error ? (
-          <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center text-center">
-            <div className="mb-6 rounded-full bg-red-50 p-6 dark:bg-red-900/20">
-              <AlertCircle className="h-12 w-12 text-red-500 opacity-80" />
+        <React.Suspense fallback={<div className="flex min-h-[50vh] flex-col items-center justify-center"><Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" /><p className="text-muted-foreground font-medium">正在加载深度洞察报告...</p></div>}>
+          {loading ? (
+            <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center">
+              <Loader2 className="mb-4 h-10 w-10 animate-spin text-[#0071e3]" />
+              <p className="text-muted-foreground font-medium">正在加载深度洞察报告...</p>
             </div>
-            <h3 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
-              加载失败
-            </h3>
-            <p className="max-w-md text-lg text-gray-500 dark:text-gray-400">{error}</p>
-            <Button variant="outline" onClick={() => router.back()} className="mt-6 rounded-full">
-              返回上一页
-            </Button>
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex-1"
-          >
-            <ChartViewer data={chartData} />
-          </motion.div>
-        )}
+          ) : error ? (
+            <div className="flex min-h-[50vh] flex-1 flex-col items-center justify-center text-center">
+              <div className="mb-6 rounded-full bg-red-50 p-6 dark:bg-red-900/20">
+                <AlertCircle className="h-12 w-12 text-red-500 opacity-80" />
+              </div>
+              <h3 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                加载失败
+              </h3>
+              <p className="max-w-md text-lg text-gray-500 dark:text-gray-400">{error}</p>
+              <Button variant="outline" onClick={() => router.back()} className="mt-6 rounded-full">
+                返回上一页
+              </Button>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full flex-1"
+            >
+              <ChartViewer data={chartData} />
+            </motion.div>
+          )}
+        </React.Suspense>
       </main>
     </div>
   )

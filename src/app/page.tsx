@@ -5,7 +5,7 @@ import CTA from "@/components/landing/cta"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[#FAFAFA] dark:bg-[#1C1C1E] text-[#1D1D1F] dark:text-white overflow-x-hidden selection:bg-[#0066FF] selection:text-white">
+    <main className="flex min-h-screen flex-col items-center bg-background text-foreground overflow-x-hidden selection:bg-primary/30 selection:text-primary">
       <Hero />
       <Features />
       <Steps />

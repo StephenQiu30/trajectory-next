@@ -70,13 +70,13 @@ export default function Hero() {
                     >
                         <Button
                             size="lg"
-                            className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-14 text-base font-bold transition-all apple-shadow group"
+                            className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-14 text-base font-bold transition-all apple-shadow group border-none"
                         >
                             立即免费开启
                             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                         <Button
-                            variant="outline"
+                            variant="ghost"
                             size="lg"
                             className="rounded-full px-8 h-14 text-base font-bold glass"
                         >
