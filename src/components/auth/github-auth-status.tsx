@@ -18,7 +18,7 @@ interface GitHubAuthStatusProps {
 
 export function GitHubAuthStatus({ status, message, progress, onRetry }: GitHubAuthStatusProps) {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#F5F5F7] p-4 text-[#1D1D1F] dark:bg-[#000000] dark:text-[#F5F5F7]">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background p-4 text-foreground transition-colors duration-500">
       {/* 动态背景光效 */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-500/5" />
@@ -30,7 +30,7 @@ export function GitHubAuthStatus({ status, message, progress, onRetry }: GitHubA
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
         className="relative z-10 w-full max-w-[420px]"
       >
-        <Card className="relative overflow-hidden rounded-[32px] border-white/20 bg-white/70 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-black/60">
+        <Card className="glass apple-shadow relative overflow-hidden rounded-[32px] border-none bg-white/70 shadow-2xl transition-all duration-500 dark:bg-black/40">
           <div className="flex flex-col items-center p-10 text-center">
             {/* Logo 连接区域 */}
             <div className="relative mb-10 flex w-full items-center justify-center gap-6">
@@ -91,16 +91,15 @@ export function GitHubAuthStatus({ status, message, progress, onRetry }: GitHubA
               </AnimatePresence>
             </div>
 
-            {/* 状态文本 */}
             <motion.div layout className="mb-8 space-y-3">
-              <h2 className="text-2xl font-semibold tracking-tight">
+              <h2 className="text-2xl font-bold tracking-tight">
                 {status === 'loading'
                   ? '正在连接 GitHub...'
                   : status === 'success'
                     ? '验证成功'
                     : '验证失败'}
               </h2>
-              <p className="text-[15px] font-medium text-black/50 dark:text-white/50">{message}</p>
+              <p className="text-[15px] font-medium opacity-50">{message}</p>
             </motion.div>
 
             {/* 操作按钮 */}
@@ -145,7 +144,7 @@ export function GitHubAuthStatus({ status, message, progress, onRetry }: GitHubA
       </motion.div>
 
       {/* 底部版权信息 - Apple Style */}
-      <div className="absolute bottom-8 text-center text-xs font-medium text-black/30 dark:text-white/30">
+      <div className="absolute bottom-8 text-center text-[10px] font-bold tracking-widest opacity-30 uppercase">
         <p>&copy; 2026 {SITE_NAME}. All rights reserved.</p>
         <p className="mt-1 flex justify-center gap-4">
           <span>Privacy</span>

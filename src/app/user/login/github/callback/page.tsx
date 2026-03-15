@@ -94,8 +94,8 @@ export default function GitHubCallbackPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="flex h-screen w-screen items-center justify-center bg-[#F5F5F7] dark:bg-black">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#0071E3] border-t-transparent" />
+        <div className="flex h-screen w-screen items-center justify-center bg-background">
+          <div className="text-primary h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
         </div>
       }
     >

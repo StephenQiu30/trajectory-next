@@ -49,6 +49,14 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
       const textColor = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'
       const splitLineColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
 
+      const safeMergeAxis = (axis: any, styles: any) => {
+        if (!axis) return styles
+        if (Array.isArray(axis)) {
+          return axis.map(item => ({ ...item, ...styles }))
+        }
+        return { ...axis, ...styles }
+      }
+
       const biStyle = {
         backgroundColor: 'transparent',
         textStyle: {
@@ -60,17 +68,15 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           ...chartOption.legend,
           textStyle: { color: textColor, fontSize: 11, fontWeight: 500 },
         },
-        xAxis: {
-          ...chartOption.xAxis,
+        xAxis: safeMergeAxis(chartOption.xAxis, {
           axisLabel: { color: textColor, fontSize: 11 },
           axisLine: { lineStyle: { color: splitLineColor } },
           splitLine: { show: false },
-        },
-        yAxis: {
-          ...chartOption.yAxis,
+        }),
+        yAxis: safeMergeAxis(chartOption.yAxis, {
           axisLabel: { color: textColor, fontSize: 11 },
           splitLine: { lineStyle: { color: splitLineColor, type: 'dashed' } },
-        },
+        }),
         tooltip: {
           ...chartOption.tooltip,
           backgroundColor: isDark ? 'rgba(30, 30, 35, 0.95)' : 'rgba(255, 255, 255, 0.95)',
@@ -123,139 +129,154 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
   }
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 flex w-full flex-col gap-8 duration-1000">
-      {/* Header Area */}
-      <header className="flex flex-col gap-6">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div className="space-y-1.5">
-            <div className="mb-1 flex items-center gap-2">
-              <span className="bg-primary/10 text-primary rounded-md px-2 py-0.5 text-[10px] font-bold tracking-widest whitespace-nowrap uppercase">
-                Analysis Results
-              </span>
-              <div
-                className={cn(
-                  'flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase',
-                  data.status === 'succeed'
-                    ? 'text-green-600/80'
-                    : data.status === 'running'
-                      ? 'text-primary/80'
-                      : 'text-destructive/80'
-                )}
-              >
-                <div
-                  className={cn(
-                    'h-1 w-1 rounded-full',
-                    data.status === 'succeed'
-                      ? 'bg-green-500'
-                      : data.status === 'running'
-                        ? 'bg-primary animate-pulse'
-                        : 'bg-destructive'
-                  )}
-                />
-                {data.status === 'succeed'
-                  ? 'Success'
-                  : data.status === 'running'
-                    ? 'Running'
-                    : 'Failed'}
-              </div>
-            </div>
-            <h2 className="text-foreground/90 text-2xl font-bold tracking-tight">结果看板</h2>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
-            {[
-              { label: 'Type', value: data.chartType || 'Chart', icon: BarChart2 },
-              { label: 'Mode', value: 'AI Smart', icon: Sparkles },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="text-muted-foreground/40 border-border/10 flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase"
-              >
-                <item.icon className="text-primary/40 h-3 w-3" />
-                <span>
-                  {item.label}: <span className="text-foreground/60">{item.value}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Simplified Goal Container */}
-        <div className="glass bg-primary/[0.01] group rounded-2xl border-none p-5">
-          <div className="flex items-start gap-4">
-            <div className="bg-primary/10 text-primary mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg">
-              <Info className="h-3 w-3" />
-            </div>
-            <div className="space-y-1">
-              <span className="text-muted-foreground/50 text-[10px] font-bold tracking-widest uppercase">
-                分析目标
-              </span>
-              <p className="text-foreground/70 text-sm leading-relaxed font-medium italic">
-                "{data.goal || '探索性分析模式'}"
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="animate-in fade-in slide-in-from-bottom-4 flex w-full flex-col gap-10 duration-1000">
       <AnimatePresence mode="wait">
         <motion.div
           key={`viewer-${data.id}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]"
+          className="flex flex-col items-stretch gap-8 lg:flex-row"
         >
-          {/* Main Visual Stage */}
-          <div className="glass apple-shadow relative flex min-h-[500px] flex-col overflow-hidden rounded-[2rem] border-none bg-white/60 dark:bg-white/[0.03]">
-            <div className="border-border/5 flex items-center justify-between border-b px-6 py-4">
-              <div className="flex items-center gap-2">
-                <BarChart2 className="text-primary h-4 w-4" />
-                <h3 className="text-sm font-bold tracking-tight">可视化看板</h3>
+          {/* Unified Visual Board - Side by Side Left */}
+          <div className="glass group relative flex min-h-[700px] flex-1 flex-col overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/40 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.1)] transition-all duration-700 lg:flex-[1.6] dark:border-white/5 dark:bg-white/[0.02] dark:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]">
+            {/* Blueprint Grid Background */}
+            <div className="pointer-events-none absolute inset-0 opacity-[0.03] transition-opacity duration-700 group-hover:opacity-[0.05] dark:opacity-[0.05] dark:group-hover:opacity-[0.08]">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
+                  backgroundSize: '40px 40px',
+                }}
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
+                  backgroundSize: '8px 8px',
+                  opacity: 0.3,
+                }}
+              />
+            </div>
+
+            {/* Technical Corner Accents */}
+            <div className="text-primary/30 absolute top-6 left-6 h-4 w-4 border-t-2 border-l-2 transition-colors duration-500 group-hover:text-primary/60" />
+            <div className="text-primary/30 absolute top-6 right-6 h-4 w-4 border-t-2 border-r-2 transition-colors duration-500 group-hover:text-primary/60" />
+            <div className="text-primary/30 absolute right-6 bottom-6 h-4 w-4 border-r-2 border-b-2 transition-colors duration-500 group-hover:text-primary/60" />
+            <div className="text-primary/30 absolute bottom-6 left-6 h-4 w-4 border-l-2 border-b-2 transition-colors duration-500 group-hover:text-primary/60" />
+
+            {/* Integrated Header */}
+            <div className="border-border/5 relative z-10 flex flex-col border-b bg-white/[0.02] backdrop-blur-md dark:bg-transparent">
+              <div className="flex flex-col justify-between gap-4 px-8 py-5 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-4">
+                  <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl ring-1 ring-primary/20">
+                    <BarChart2 className="text-primary h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h3 className="text-xl font-bold tracking-tight">结果看板</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 rounded-md bg-green-500/10 px-1.5 py-0.5 ring-1 ring-green-500/20">
+                        <div className="h-1 w-1 animate-pulse rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                        <span className="text-green-500 text-[8px] font-black tracking-widest uppercase">
+                          {data.status === 'succeed' ? 'Live System' : 'Processing'}
+                        </span>
+                      </div>
+                      <div className="bg-foreground/10 h-1 w-1 rounded-full" />
+                      <span className="text-muted-foreground/60 text-[8px] font-bold tracking-widest uppercase monospaced">
+                        CORE_ENGINE.v2 • {data.chartType?.toUpperCase() || 'STANDARD'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Diagnostic Label Strip */}
+                <div className="hidden items-center gap-3 sm:flex">
+                  <div className="flex h-8 items-center gap-2 rounded-lg border border-white/10 bg-black/5 px-3 dark:bg-white/5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-primary/40 text-[7px] font-black tracking-widest uppercase">
+                        Diag
+                      </span>
+                      <span className="text-foreground/40 text-[9px] font-bold monospaced">
+                        STATUS_OK
+                      </span>
+                    </div>
+                    <div className="bg-white/10 h-3 w-px" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-primary/40 text-[7px] font-black tracking-widest uppercase">
+                        Freq
+                      </span>
+                      <span className="text-foreground/40 text-[9px] font-bold monospaced">60Hz</span>
+                    </div>
+                  </div>
+
+                  {/* Analysis Goal Strip */}
+                  <div className="glass bg-primary/[0.03] border-border/5 max-w-[240px] rounded-xl border px-3 py-1.5">
+                    <div className="flex items-center gap-2.5">
+                      <Info className="text-primary h-3 w-3 shrink-0" />
+                      <p className="text-foreground/50 truncate text-[11px] font-medium italic">
+                        {data.goal || '探索性分析模式'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-1 items-center justify-center p-6">
+            <div className="relative flex flex-1 items-center justify-center p-8">
               {data.status === 'failed' ? (
                 <div className="flex flex-col items-center justify-center space-y-4 p-10 opacity-60">
                   <Trash2 className="text-destructive/40 h-10 w-10" />
                   <div className="space-y-1 text-center">
                     <p className="text-base font-bold">分析失败</p>
-                    <p className="text-[11px] font-medium">请检查数据格式后重试</p>
+                    <p className="text-[11px] font-medium uppercase monospaced">RETRY_REQUIRED</p>
                   </div>
                 </div>
               ) : data.genChart ? (
-                <div className="group relative h-full w-full">
+                <div className="group relative z-10 h-full w-full">
                   <ReactECharts
                     option={chartOption}
-                    style={{ height: '400px', width: '100%' }}
+                    style={{ height: '600px', width: '100%' }}
                     opts={{ renderer: 'svg' }}
                   />
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-4 opacity-40">
-                  <Cpu className="h-8 w-8 animate-pulse" />
-                  <p className="text-[10px] font-bold tracking-widest uppercase italic">
-                    Preparing...
+                  <Cpu className="h-8 w-8 animate-pulse text-primary" />
+                  <p className="text-[10px] font-bold tracking-widest uppercase italic monospaced animate-pulse">
+                    Synthesizing...
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* AI Strategy & Insights */}
-          <aside className="glass apple-shadow flex flex-col rounded-[2rem] border-none bg-white/60 p-6 dark:bg-white/[0.03]">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="bg-primary/10 flex h-9 w-9 items-center justify-center rounded-xl">
-                <Sparkles className="text-primary h-4 w-4" />
+          {/* AI Strategy & Insights - Side by Side Right */}
+          <aside className="glass group relative flex flex-1 flex-col rounded-[2.5rem] border border-white/10 bg-white/60 p-10 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.1)] transition-all duration-700 dark:border-white/5 dark:bg-white/[0.03] dark:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]">
+            {/* Subtle Texture for Aside */}
+            <div className="pointer-events-none absolute inset-0 opacity-[0.02] dark:opacity-[0.04]">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+                  backgroundSize: '16px 16px',
+                }}
+              />
+            </div>
+
+            <div className="relative z-10 mb-8 flex items-center gap-4">
+              <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ring-primary/20">
+                <Sparkles className="text-primary h-6 w-6 animate-pulse" />
               </div>
-              <div>
-                <h3 className="text-base font-bold tracking-tight">AI 洞察报告</h3>
+              <div className="space-y-1">
+                <h3 className="text-2xl font-black tracking-tight italic uppercase">AI 洞察报告</h3>
+                <p className="text-muted-foreground/50 text-[10px] font-bold tracking-[0.2em] uppercase monospaced">
+                  Strategic intelligence . 0.9.4
+                </p>
               </div>
             </div>
 
             {data.genResult ? (
-              <div className="text-muted-foreground/90 scrollbar-thin max-h-[460px] flex-1 overflow-y-auto pr-2 text-sm leading-relaxed">
+              <div className="text-muted-foreground/90 scrollbar-thin flex-1 pr-2 text-base leading-relaxed">
                 <MarkdownRender content={data.genResult} />
               </div>
             ) : (

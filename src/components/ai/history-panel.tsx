@@ -149,26 +149,30 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
   return (
     <div className="flex h-full w-full flex-col space-y-8 bg-transparent">
       {/* Search & Filter Header */}
-      <div className="flex flex-col justify-between gap-6 px-2 lg:flex-row lg:items-center">
-        <div className="space-y-1.5">
-          <h2 className="text-3xl font-bold tracking-tight">历史记录</h2>
-          <p className="text-foreground/50 flex items-center gap-2 text-sm font-bold tracking-widest dark:text-foreground/70 uppercase">
-            <Clock className="h-3 w-3" />
-            Total {total} Analysis Reports
-          </p>
+      <div className="flex flex-col justify-between gap-6 px-4 lg:flex-row lg:items-center">
+        <div className="flex items-center gap-5">
+          <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-xl">
+            <Clock className="h-5 w-5" />
+          </div>
+          <div className="space-y-0.5">
+            <h2 className="text-2xl font-bold tracking-tight">历史记录</h2>
+            <p className="text-foreground/40 text-[10px] font-bold tracking-widest dark:text-foreground/60 uppercase">
+              Total {total} Analysis Reports
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <div className="group relative w-full sm:w-[300px]">
-            <Search className="text-foreground/20 group-hover:text-primary/40 absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 transition-colors" />
+          <div className="group relative w-full sm:w-[280px]">
+            <Search className="text-foreground/20 group-hover:text-primary absolute top-1/2 left-3.5 h-3.5 w-3.5 -translate-y-1/2 transition-colors duration-300" />
             <Input
-              placeholder="搜索分析名称..."
+              placeholder="搜索任务..."
               value={searchName}
               onChange={e => setSearchName(e.target.value)}
-              className="glass apple-shadow focus-visible:ring-primary/20 h-12 rounded-2xl border-none pr-4 pl-11 transition-all focus-visible:ring-1"
+              className="glass apple-shadow focus-visible:ring-primary/20 h-11 rounded-xl border-none pr-4 pl-10 text-xs font-medium transition-all duration-500 focus-visible:ring-1"
             />
           </div>
-          <div className="glass apple-shadow flex items-center rounded-[1.25rem] border-none p-1">
+          <div className="glass apple-shadow flex items-center rounded-2xl border-none p-1.5">
             {[
               { label: '全部', value: undefined },
               { label: '成功', value: ChartStatusEnum.SUCCEED },
@@ -178,10 +182,10 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                 key={tab.label}
                 onClick={() => setStatusFilter(tab.value)}
                 className={cn(
-                  'rounded-xl px-5 py-2 text-xs font-bold transition-all duration-300',
+                  'rounded-xl px-6 py-2.5 text-xs font-bold transition-all duration-500',
                   statusFilter === tab.value
-                    ? 'text-primary apple-shadow bg-background/50 scale-[1.05]'
-                    : 'text-foreground/50 hover:text-foreground/70'
+                    ? 'text-primary bg-background/80 shadow-sm scale-105'
+                    : 'text-foreground/40 hover:text-foreground/60'
                 )}
               >
                 {tab.label}
@@ -211,7 +215,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
           <div className="flex h-full flex-col gap-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               <AnimatePresence mode="popLayout" initial={false}>
-                {filteredCharts.map((chart, index) => (
+                {filteredCharts.map((chart) => (
                   <motion.div
                     key={chart.id}
                     layout
@@ -222,106 +226,121 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                     className="h-full"
                   >
                     <Card
-                      className="glass apple-shadow group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[2.5rem] border-none transition-all duration-700 hover:scale-[1.02] active:scale-[0.98] dark:hover:bg-white/[0.03]"
+                      className="glass apple-shadow group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[2.5rem] border-none transition-all duration-700 hover:translate-y-[-4px] hover:scale-[1.01] active:scale-[0.98] dark:hover:bg-white/[0.05]"
                       onClick={() => onSelectChart(chart)}
                     >
-                      {/* Ambient background glow on hover */}
+                      {/* Atmospheric Background & Technical Accents */}
+                      <div className="pointer-events-none absolute inset-0 opacity-10 transition-opacity duration-700 group-hover:opacity-20">
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+                            backgroundSize: '24px 24px',
+                          }}
+                        />
+                      </div>
                       <div className="pointer-events-none absolute -inset-2 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
                         <div className="from-primary/10 absolute inset-0 bg-gradient-to-br via-transparent to-transparent blur-3xl" />
                       </div>
 
-                      <CardContent className="relative z-10 flex flex-1 flex-col p-7">
-                        <div className="flex flex-1 flex-col gap-6">
-                          <div className="flex items-start justify-between">
-                            <div
-                              className={cn(
-                                'apple-shadow flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl transition-all duration-700 group-hover:scale-110 group-hover:-rotate-3',
-                                chartIconMap[chart.chartType || '']?.bgColor || 'bg-secondary'
-                              )}
-                            >
-                              {chartIconMap[chart.chartType || ''] ? (
-                                getChartIcon(chart.chartType)
-                              ) : (
-                                <BarChart2 className="text-primary h-8 w-8" />
-                              )}
-                            </div>
+                      {/* Technical Corner Accents */}
+                      <div className="text-primary/20 absolute top-4 left-4 h-2 w-2 border-t border-l transition-colors duration-500 group-hover:text-primary/40" />
+                      <div className="text-primary/20 absolute right-4 bottom-4 h-2 w-2 border-r border-b transition-colors duration-500 group-hover:text-primary/40" />
 
+                      <CardContent className="relative z-10 flex flex-1 flex-col p-6">
+                        <div className="flex flex-col gap-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={cn(
+                                  'flex h-10 w-10 items-center justify-center rounded-xl shadow-sm transition-transform duration-500 group-hover:rotate-6',
+                                  chartIconMap[chart.chartType || '']?.bgColor || 'bg-secondary'
+                                )}
+                              >
+                                {(() => {
+                                  const iconConfig = chartIconMap[chart.chartType || '']
+                                  if (iconConfig) {
+                                    const Icon = iconConfig.icon
+                                    return <Icon className={cn('h-5 w-5', iconConfig.color)} />
+                                  }
+                                  return <BarChart2 className="text-foreground/40 h-5 w-5" />
+                                })()}
+                              </div>
+                              <div className="space-y-0.5">
+                                <span className="text-primary/40 block text-[8px] font-black tracking-widest uppercase monospaced">
+                                  ID: {chart.id?.toString().padStart(6, '0') || '000000'}
+                                </span>
+                                <p className="text-foreground/30 text-[9px] font-bold tracking-widest uppercase">
+                                  {chartIconMap[chart.chartType || '']?.label ||
+                                    'Intelligence Report'}
+                                </p>
+                              </div>
+                            </div>
                             <div className="flex items-center gap-2">
                               <div
                                 className={cn(
-                                  'flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase',
+                                  'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[8px] font-black tracking-widest uppercase shadow-sm transition-all duration-500',
                                   chart.status === ChartStatusEnum.SUCCEED
-                                    ? 'bg-green-500/10 text-green-500'
+                                    ? 'bg-green-500/10 text-green-500 ring-1 ring-green-500/20'
                                     : chart.status === ChartStatusEnum.RUNNING
-                                      ? 'bg-primary/20 text-primary'
-                                    : 'bg-destructive/20 text-destructive'
+                                      ? 'bg-primary/10 text-primary ring-1 ring-primary/20'
+                                      : 'bg-destructive/10 text-destructive ring-1 ring-destructive/20'
                                 )}
                               >
                                 <div
                                   className={cn(
-                                    'h-1.5 w-1.5 shrink-0 rounded-full',
+                                    'h-1 w-1 rounded-full',
                                     chart.status === ChartStatusEnum.SUCCEED
                                       ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]'
                                       : chart.status === ChartStatusEnum.RUNNING
-                                        ? 'bg-primary shadow-[0_0_8px_rgba(0,102,255,0.6)]'
+                                        ? 'bg-primary animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.6)]'
                                         : 'bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.6)]'
                                   )}
                                 />
                                 {chart.status === ChartStatusEnum.SUCCEED
                                   ? 'Success'
                                   : chart.status === ChartStatusEnum.RUNNING
-                                    ? 'Analyzing'
+                                    ? 'Running'
                                     : 'Failed'}
                               </div>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="hover:bg-destructive/10 hover:text-destructive h-8 w-8 rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
+                                className="hover:bg-destructive/10 hover:text-destructive h-7 w-7 rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
                                 onClick={e => handleDelete(e, chart.id!)}
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-3.5 w-3.5" />
                               </Button>
                             </div>
                           </div>
 
-                          <div className="flex flex-1 flex-col space-y-4">
-                            <div className="space-y-1.5">
-                              <h3 className="text-foreground/90 group-hover:text-primary truncate text-xl leading-none font-bold tracking-tight transition-colors">
-                                {chart.name || '未命名分析'}
-                              </h3>
-                              <p className="text-foreground/20 text-[12px] font-bold tracking-[0.1em] uppercase">
-                                {chart.chartType || 'Standard Analysis'}
-                              </p>
-                            </div>
+                          <div className="space-y-1.5">
+                            <h3 className="text-foreground/90 group-hover:text-primary line-clamp-1 text-lg font-bold tracking-tight transition-colors">
+                              {chart.name || '未命名报告'}
+                            </h3>
+                            <div className="bg-primary/5 h-px w-12 transition-all duration-500 group-hover:w-full" />
+                          </div>
 
-                            <div className="flex-1">
-                              {chart.status === ChartStatusEnum.SUCCEED && chart.genResult ? (
-                                <div className="bg-primary/[0.03] text-foreground/60 border-primary/5 group-hover:bg-primary/[0.06] line-clamp-2 min-h-[72px] rounded-2xl border p-4 text-[12px] leading-relaxed font-medium italic transition-colors">
-                                  {chart.genResult.replace(/[#*`]/g, '').slice(0, 100)}...
-                                </div>
-                              ) : (
-                                <div className="border-foreground/5 bg-foreground/[0.02] flex min-h-[72px] items-center justify-center rounded-2xl border border-dashed">
-                                  <div className="opactiy-20 flex flex-col items-center gap-1">
-                                    <Sparkles className="text-foreground/20 h-4 w-4" />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
+                          {/* Mission Brief Section */}
+                          <div className="bg-secondary/20 group-hover:bg-secondary/40 relative h-20 overflow-hidden rounded-xl p-3.5 transition-colors">
+                            <div className="bg-primary/20 absolute top-0 left-0 h-full w-1" />
+                            <span className="text-primary/30 mb-1 block text-[7px] font-black tracking-[0.2em] uppercase">
+                              Mission Brief
+                            </span>
+                            <p className="text-foreground/60 line-clamp-2 text-[11px] leading-relaxed font-medium italic">
+                              "{chart.goal || '此项分析任务未设定明确目标。'}"
+                            </p>
+                          </div>
 
-                            <div className="mt-auto flex items-center justify-between pt-2">
-                              <div className="text-foreground/25 flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
-                                <div className="flex items-center gap-1.5">
-                                  <Clock className="h-3 w-3" />
-                                  <span>
-                                    {chart.createTime
-                                      ? new Date(chart.createTime).toLocaleDateString()
-                                      : ''}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="glass bg-primary/5 group-hover:bg-primary/10 rounded-full p-2 opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100">
-                                <ChevronRight className="text-primary h-4 w-4" />
-                              </div>
+                          <div className="mt-auto flex items-center justify-between pt-2">
+                            <div className="text-foreground/30 flex items-center gap-1.5 text-[9px] font-bold tracking-widest uppercase">
+                              <Clock className="h-3 w-3 opacity-40" />
+                              {chart.createTime
+                                ? new Date(chart.createTime).toLocaleDateString()
+                                : 'Recently'}
+                            </div>
+                            <div className="bg-primary/10 group-hover:bg-primary text-primary group-hover:text-white flex h-7 w-7 items-center justify-center rounded-lg shadow-sm transition-all active:scale-90">
+                              <ChevronRight className="h-4 w-4" />
                             </div>
                           </div>
                         </div>
@@ -331,7 +350,6 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                 ))}
               </AnimatePresence>
             </div>
-
             <Pagination />
           </div>
         )}
