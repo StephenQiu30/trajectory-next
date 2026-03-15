@@ -56,8 +56,11 @@ function AuthLoader({ children }: { children: React.ReactNode }) {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
       const hostname = process.env.NEXT_PUBLIC_API_BASE_URL
         ? new URL(process.env.NEXT_PUBLIC_API_BASE_URL).hostname
-        : 'localhost'
-      const wsUrl = `${protocol}//${hostname}:9090/websocket`
+        : window.location.hostname
+      const wsPort = process.env.NEXT_PUBLIC_WS_PORT || '9090'
+      const wsUrl = `${protocol}//${hostname}:${wsPort}/websocket`
+
+      console.log(`[WebSocket] Connecting to: ${wsUrl}`)
 
       const ws = new WebSocket(wsUrl)
       socketRef.current = ws
@@ -164,7 +167,7 @@ export function RootProviders({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <AuthLoader>
-        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
           <Toaster position="top-center" richColors />
         </ThemeProvider>

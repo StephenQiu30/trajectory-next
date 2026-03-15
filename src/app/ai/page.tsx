@@ -23,8 +23,8 @@ export default function AiAnalyticsPage() {
 
       {/* Background ambient glow - Subtler */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="bg-primary/3 absolute top-[5%] right-[10%] h-[30rem] w-[30rem] rounded-full blur-[100px]" />
-        <div className="bg-primary/3 absolute bottom-[5%] left-[10%] h-[25rem] w-[25rem] rounded-full blur-[100px]" />
+        <div className="bg-primary/5 absolute top-[5%] right-[10%] h-[30rem] w-[30rem] rounded-full blur-[100px] dark:bg-primary/20" />
+        <div className="bg-primary/5 absolute bottom-[5%] left-[10%] h-[25rem] w-[25rem] rounded-full blur-[100px] dark:bg-primary/20" />
       </div>
 
       <main className="relative z-10 mx-auto max-w-7xl px-6 pt-8 lg:px-12">
@@ -53,7 +53,7 @@ export default function AiAnalyticsPage() {
                       </div>
                       Archives
                     </h1>
-                    <p className="text-foreground/20 ml-1 text-sm font-black tracking-[0.3em] uppercase">
+                    <p className="text-foreground/40 ml-1 text-sm font-black tracking-[0.3em] dark:text-foreground/60 uppercase">
                       AI Analysis History
                     </p>
                   </div>
@@ -85,7 +85,7 @@ export default function AiAnalyticsPage() {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-10"
               >
-                <div className="glass apple-shadow relative flex flex-col items-center justify-between gap-8 overflow-hidden rounded-[2.5rem] border-none bg-white/40 px-8 py-10 sm:flex-row dark:bg-black/20">
+                <div className="glass apple-shadow relative flex flex-col items-center justify-between gap-8 overflow-hidden rounded-[2.5rem] border-none px-8 py-10 sm:flex-row">
                   <div className="space-y-2">
                     <h1 className="flex items-center gap-4 text-4xl font-bold tracking-tight">
                       <div className="bg-primary/10 rounded-2xl p-3">
@@ -93,14 +93,14 @@ export default function AiAnalyticsPage() {
                       </div>
                       Synthesis
                     </h1>
-                    <p className="text-muted-foreground/50 ml-1 text-xs font-semibold tracking-[0.2em] uppercase">
+                    <p className="text-muted-foreground/70 ml-1 text-xs font-semibold tracking-[0.2em] dark:text-muted-foreground/90 uppercase">
                       Integrated AI Intelligence & Laboratory Stage
                     </p>
                   </div>
                   <Button
                     variant="outline"
                     size="lg"
-                    className="glass apple-shadow group h-14 gap-3 rounded-2xl border-none px-8 transition-all hover:bg-white/60 active:scale-95 dark:hover:bg-black/40"
+                    className="glass apple-shadow group h-14 gap-3 rounded-2xl border-none px-8 transition-all hover:bg-primary/10 active:scale-95"
                     onClick={() => setShowHistory(true)}
                   >
                     <HistoryIcon className="text-primary/70 h-5 w-5 transition-transform group-hover:-rotate-12" />
@@ -113,7 +113,7 @@ export default function AiAnalyticsPage() {
                 <div className="grid grid-cols-1 items-start gap-10 xl:grid-cols-[400px_1fr]">
                   {/* Configuration Sidebar */}
                   <aside className="w-full">
-                    <div className="glass apple-shadow rounded-[2.5rem] border-none bg-white/60 p-10 dark:bg-gray-950/60">
+                    <div className="glass apple-shadow rounded-[2.5rem] border-none p-10">
                       <AnalysisForm
                         onAnalysisSuccess={setActiveAnalysis}
                         onAnalysisAsyncSuccess={() => {

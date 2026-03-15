@@ -91,7 +91,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
           size="sm"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
-          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/10"
+          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/5"
         >
           上一页
         </Button>
@@ -103,7 +103,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
           size="sm"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
-          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/10"
+          className="glass apple-shadow h-11 rounded-full border-none px-8 font-bold transition-all hover:bg-white/50 active:scale-95 dark:hover:bg-white/5"
         >
           下一页
         </Button>
@@ -152,7 +152,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
       <div className="flex flex-col justify-between gap-6 px-2 lg:flex-row lg:items-center">
         <div className="space-y-1.5">
           <h2 className="text-3xl font-bold tracking-tight">历史记录</h2>
-          <p className="text-foreground/40 flex items-center gap-2 text-sm font-bold tracking-widest uppercase">
+          <p className="text-foreground/50 flex items-center gap-2 text-sm font-bold tracking-widest dark:text-foreground/70 uppercase">
             <Clock className="h-3 w-3" />
             Total {total} Analysis Reports
           </p>
@@ -165,10 +165,10 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
               placeholder="搜索分析名称..."
               value={searchName}
               onChange={e => setSearchName(e.target.value)}
-              className="glass apple-shadow focus-visible:ring-primary/20 h-12 rounded-2xl border-none bg-white/40 pr-4 pl-11 transition-all focus-visible:ring-1 dark:bg-black/20"
+              className="glass apple-shadow focus-visible:ring-primary/20 h-12 rounded-2xl border-none pr-4 pl-11 transition-all focus-visible:ring-1"
             />
           </div>
-          <div className="glass apple-shadow flex items-center rounded-[1.25rem] border-none bg-white/40 p-1 dark:bg-black/20">
+          <div className="glass apple-shadow flex items-center rounded-[1.25rem] border-none p-1">
             {[
               { label: '全部', value: undefined },
               { label: '成功', value: ChartStatusEnum.SUCCEED },
@@ -180,8 +180,8 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                 className={cn(
                   'rounded-xl px-5 py-2 text-xs font-bold transition-all duration-300',
                   statusFilter === tab.value
-                    ? 'text-primary apple-shadow scale-[1.05] bg-white dark:bg-white/10'
-                    : 'text-foreground/30 hover:text-foreground/50'
+                    ? 'text-primary apple-shadow bg-background/50 scale-[1.05]'
+                    : 'text-foreground/50 hover:text-foreground/70'
                 )}
               >
                 {tab.label}
@@ -222,7 +222,7 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                     className="h-full"
                   >
                     <Card
-                      className="group bg-secondary/5 glass apple-shadow relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[2.5rem] border-none transition-all duration-700 hover:scale-[1.02] hover:bg-white/70 active:scale-[0.98] dark:hover:bg-white/10"
+                      className="glass apple-shadow group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[2.5rem] border-none transition-all duration-700 hover:scale-[1.02] active:scale-[0.98] dark:hover:bg-white/[0.03]"
                       onClick={() => onSelectChart(chart)}
                     >
                       {/* Ambient background glow on hover */}
@@ -253,8 +253,8 @@ export function HistoryPanel({ onSelectChart }: HistoryPanelProps) {
                                   chart.status === ChartStatusEnum.SUCCEED
                                     ? 'bg-green-500/10 text-green-500'
                                     : chart.status === ChartStatusEnum.RUNNING
-                                      ? 'bg-primary/10 text-primary'
-                                      : 'bg-destructive/10 text-destructive'
+                                      ? 'bg-primary/20 text-primary'
+                                    : 'bg-destructive/20 text-destructive'
                                 )}
                               >
                                 <div

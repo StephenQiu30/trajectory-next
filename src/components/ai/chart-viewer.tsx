@@ -4,26 +4,30 @@ import * as React from 'react'
 import ReactECharts from 'echarts-for-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MarkdownRender } from '@/components/markdown/markdown-render'
+import { useTheme } from 'next-themes'
 import { BarChart2, Cpu, Info, Sparkles, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
+  const { theme, resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark' || theme === 'dark'
+
   if (!data) {
     return (
       <div className="animate-in fade-in slide-in-from-bottom-4 flex h-full w-full flex-col gap-8 duration-1000">
-        <div className="glass apple-shadow group relative flex h-full flex-col overflow-hidden rounded-[2rem] border-none bg-white/60 dark:bg-gray-950/60">
+        <div className="glass apple-shadow group relative flex h-full flex-col overflow-hidden rounded-[2rem] border-none bg-white/60 dark:bg-white/[0.03]">
           {/* Central Ready Visual */}
           <div className="relative flex flex-1 flex-col items-center justify-center p-12 text-center">
             <div className="relative mb-6">
-              <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-sm transition-transform duration-700 group-hover:scale-105 dark:bg-black">
+              <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-sm transition-transform duration-700 group-hover:scale-105 dark:bg-white/5">
                 <div className="border-primary/5 bg-primary/[0.02] absolute inset-0 rounded-3xl border" />
                 <Sparkles className="text-primary/40 h-8 w-8" />
               </div>
             </div>
 
             <div className="relative z-10 space-y-2">
-              <h2 className="text-foreground/40 text-xl font-bold tracking-tight">准备就绪</h2>
-              <p className="text-muted-foreground/30 mx-auto max-w-md text-[10px] font-semibold tracking-[0.2em] uppercase">
+              <h2 className="text-foreground/60 text-xl font-bold tracking-tight">准备就绪</h2>
+              <p className="text-muted-foreground/50 mx-auto max-w-md text-[10px] font-semibold tracking-[0.2em] dark:text-muted-foreground/70 uppercase">
                 配置任务并上传数据以开启深度洞察
               </p>
             </div>
@@ -42,21 +46,40 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
         chartOption = new Function('return ' + data.genChart)()
       }
 
+      const textColor = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'
+      const splitLineColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
+
       const biStyle = {
         backgroundColor: 'transparent',
         textStyle: {
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif',
+          color: textColor,
+        },
+        legend: {
+          ...chartOption.legend,
+          textStyle: { color: textColor, fontSize: 11, fontWeight: 500 },
+        },
+        xAxis: {
+          ...chartOption.xAxis,
+          axisLabel: { color: textColor, fontSize: 11 },
+          axisLine: { lineStyle: { color: splitLineColor } },
+          splitLine: { show: false },
+        },
+        yAxis: {
+          ...chartOption.yAxis,
+          axisLabel: { color: textColor, fontSize: 11 },
+          splitLine: { lineStyle: { color: splitLineColor, type: 'dashed' } },
         },
         tooltip: {
           ...chartOption.tooltip,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          borderColor: 'transparent',
-          textStyle: { color: '#000', fontSize: 13, fontWeight: 600 },
+          backgroundColor: isDark ? 'rgba(30, 30, 35, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+          borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+          textStyle: { color: isDark ? '#fff' : '#000', fontSize: 12, fontWeight: 600 },
           borderRadius: 12,
           padding: [10, 14],
-          shadowBlur: 15,
-          shadowColor: 'rgba(0, 0, 0, 0.05)',
+          shadowBlur: 20,
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
         },
         grid: {
           ...chartOption.grid,
@@ -164,7 +187,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
               <Info className="h-3 w-3" />
             </div>
             <div className="space-y-1">
-              <span className="text-muted-foreground/30 text-[10px] font-bold tracking-widest uppercase">
+              <span className="text-muted-foreground/50 text-[10px] font-bold tracking-widest uppercase">
                 分析目标
               </span>
               <p className="text-foreground/70 text-sm leading-relaxed font-medium italic">
@@ -184,7 +207,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]"
         >
           {/* Main Visual Stage */}
-          <div className="glass apple-shadow relative flex min-h-[500px] flex-col overflow-hidden rounded-[2rem] border-none bg-white/60 dark:bg-gray-950/60">
+          <div className="glass apple-shadow relative flex min-h-[500px] flex-col overflow-hidden rounded-[2rem] border-none bg-white/60 dark:bg-white/[0.03]">
             <div className="border-border/5 flex items-center justify-between border-b px-6 py-4">
               <div className="flex items-center gap-2">
                 <BarChart2 className="text-primary h-4 w-4" />
@@ -221,7 +244,7 @@ export function ChartViewer({ data }: { data: AiAPI.ChartVO | null }) {
           </div>
 
           {/* AI Strategy & Insights */}
-          <aside className="glass apple-shadow flex flex-col rounded-[2rem] border-none bg-white/60 p-6 dark:bg-gray-950/60">
+          <aside className="glass apple-shadow flex flex-col rounded-[2rem] border-none bg-white/60 p-6 dark:bg-white/[0.03]">
             <div className="mb-6 flex items-center gap-3">
               <div className="bg-primary/10 flex h-9 w-9 items-center justify-center rounded-xl">
                 <Sparkles className="text-primary h-4 w-4" />

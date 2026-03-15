@@ -104,7 +104,7 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
 
           // 段落
           p: ({ children }) => (
-            <p className="!text-foreground/90 text-[15px] leading-relaxed sm:text-base [&:not(:first-child)]:mt-6">
+            <p className="text-foreground/90 dark:text-foreground text-[15px] leading-relaxed sm:text-base [&:not(:first-child)]:mt-6">
               {children}
             </p>
           ),
@@ -190,7 +190,7 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
           ),
           li: ({ children }) => {
             return (
-              <li className="!text-foreground/90 pl-1 text-[15px] leading-relaxed sm:text-base">
+              <li className="text-foreground/90 dark:text-foreground pl-1 text-[15px] leading-relaxed sm:text-base">
                 {children}
               </li>
             )

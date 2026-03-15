@@ -101,11 +101,11 @@ export function NotificationCard({
         }}
         className={cn(
           'ring-offset-background focus-visible:ring-ring relative flex cursor-pointer gap-3 p-3 transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-          'rounded-[18px] border',
+          'glass rounded-[18px] border',
           // Apple Glassmorphism Style & Read/Unread distinction
           notification.isRead === 0
-            ? 'border-white/20 bg-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.08)] backdrop-blur-2xl dark:border-white/10 dark:bg-zinc-800/80 dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]'
-            : 'border-transparent bg-white/40 opacity-80 grayscale-[0.2] backdrop-blur-xl hover:bg-white/60 dark:border-white/5 dark:bg-zinc-900/40 dark:hover:bg-zinc-800/60'
+            ? 'border-primary/20 bg-background/5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:border-primary/30 dark:bg-primary/5 dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]'
+            : 'border-transparent opacity-80 grayscale-[0.2] transition-opacity hover:opacity-100 dark:bg-white/[0.02] dark:hover:bg-white/[0.05]'
         )}
       >
         {/* Unread Indicator - Blue Dot */}
