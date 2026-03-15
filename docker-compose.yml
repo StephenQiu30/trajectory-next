@@ -1,6 +1,7 @@
 services:
   trajectory-next:
     container_name: trajectory-next
+    image: trajectory-next:lastest
     build:
       context: .
       dockerfile: Dockerfile
