@@ -15,8 +15,8 @@ export function SiteHeader() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
 
   return (
-    <header className="glass fixed top-0 right-0 left-0 z-50 w-full border-b">
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center px-4 transition-all duration-300 sm:px-6">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full border-b border-[color:var(--header-border)] bg-[var(--header-bg)] backdrop-blur-xl">
+      <div className="shell-container flex h-[var(--header-height)] items-center">
         <div className="flex flex-1 items-center gap-4">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>

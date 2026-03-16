@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChartTypeEnum } from '../../enums/ChartTypeEnum'
 import { chartIconMap } from '@/constants/chartIcons'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import {
   Form,
   FormControl,
@@ -105,7 +106,7 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
         )
 
         if (aiRes.code === 0) {
-          toast.success('异步分析任务提交成功，请在历史记录中查看！', { id: 'analyze' })
+          toast.success('任务已提交，后台处理完成后可在「历史」中查看。', { id: 'analyze' })
           onAnalysisAsyncSuccess()
         } else {
           throw new Error(aiRes.message || '提交异步分析失败')
@@ -148,32 +149,33 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
   }
 
   return (
-    <div className="flex h-full w-full flex-col transition-all duration-300">
-      <div className="pb-6">
-        <h2 className="text-xl font-semibold tracking-tight">配置分析任务</h2>
-        <p className="text-muted-foreground/60 mt-1 text-xs font-medium">
-          设定图表目标并上传数据源，让 AI 为你洞察
+    <div className="flex h-full w-full flex-col">
+      <div className="pb-8">
+        <h2 className="text-2xl font-bold tracking-tight">配置任务</h2>
+        <p className="text-muted-foreground/50 mt-1.5 text-xs font-semibold uppercase tracking-widest">
+          Step 1: Define your goal
         </p>
       </div>
-      <div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="space-y-5">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="space-y-1.5">
-                  <FormLabel className="text-muted-foreground/80 ml-0.5 text-[13px] font-semibold">
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-foreground/80 ml-0.5 text-[13px] font-bold">
                     图表名称
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="例如：2023年Q3销售汇总"
-                      className="border-border/40 bg-secondary/20 focus:border-primary/50 focus:bg-background h-11 rounded-xl px-4 text-sm transition-all focus:ring-0"
+                      className="border-none bg-secondary/30 focus:bg-secondary/50 h-12 rounded-2xl px-5 text-sm font-medium ring-offset-background transition-all placeholder:text-muted-foreground/40 focus:ring-2 focus:ring-primary/20"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="ml-0.5 text-[11px]" />
+                  <FormMessage className="ml-1 text-[11px] font-medium" />
                 </FormItem>
               )}
             />
@@ -182,21 +184,18 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="goal"
               render={({ field }) => (
-                <FormItem className="space-y-1.5">
-                  <FormLabel className="text-muted-foreground/80 ml-0.5 text-[13px] font-semibold">
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-foreground/80 ml-0.5 text-[13px] font-bold">
                     分析目标
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="例如：分析各地区的销售总额及其占比情况"
-                      className="border-border/40 bg-secondary/20 focus:border-primary/50 focus:bg-background min-h-[90px] resize-none rounded-xl p-4 text-sm leading-relaxed transition-all focus:ring-0"
+                      placeholder="描述你想从数据中获得什么洞察，例如：分析各地区的销售总额及其占比情况..."
+                      className="border-none bg-secondary/30 focus:bg-secondary/50 min-h-[110px] resize-none rounded-2xl p-5 text-sm font-medium leading-relaxed ring-offset-background transition-all placeholder:text-muted-foreground/40 focus:ring-2 focus:ring-primary/20"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-muted-foreground/40 ml-0.5 text-[11px] font-medium">
-                    描述越详细，AI 生成越准确
-                  </FormDescription>
-                  <FormMessage className="ml-0.5 text-[11px]" />
+                  <FormMessage className="ml-1 text-[11px] font-medium" />
                 </FormItem>
               )}
             />
@@ -205,17 +204,17 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
               control={form.control}
               name="chartType"
               render={({ field }) => (
-                <FormItem className="space-y-1.5">
-                  <FormLabel className="text-muted-foreground/80 ml-0.5 text-[13px] font-semibold">
-                    图表类型
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-foreground/80 ml-0.5 text-[13px] font-bold">
+                    推荐图表
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="border-border/40 bg-secondary/20 h-11 rounded-xl px-4 text-sm transition-all focus:ring-0">
-                        <SelectValue placeholder="智能选择类型" />
+                      <SelectTrigger className="border-none bg-secondary/30 focus:bg-secondary/50 flex h-12 rounded-2xl px-5 text-sm font-medium ring-offset-background transition-all focus:ring-2 focus:ring-primary/20">
+                        <SelectValue placeholder="智能选择最合适的图表类型" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="glass apple-shadow rounded-2xl border-none">
+                    <SelectContent className="glass apple-shadow rounded-[1.5rem] border-none p-1">
                       {Object.values(ChartTypeEnum).map(type => {
                         const iconConfig = chartIconMap[type]
                         const Icon = iconConfig?.icon
@@ -223,133 +222,137 @@ export function AnalysisForm({ onAnalysisSuccess, onAnalysisAsyncSuccess }: Anal
                           <SelectItem
                             key={type}
                             value={type}
-                            className="m-1 cursor-pointer rounded-xl py-2.5 text-sm transition-colors"
+                            className="focus:bg-primary/5 m-1 cursor-pointer rounded-xl py-3 text-sm transition-colors"
                           >
-                            <div className="flex items-center gap-2.5">
-                              {Icon && <Icon className={`h-3.5 w-3.5 ${iconConfig.color}`} />}
-                              <span className="font-medium">{type}</span>
+                            <div className="flex items-center gap-3">
+                              <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg bg-background shadow-sm", iconConfig?.color?.replace('text-', 'bg-') + '/10')}>
+                                {Icon && <Icon className={cn("h-4 w-4", iconConfig.color)} />}
+                              </div>
+                              <span className="font-semibold">{type}</span>
                             </div>
                           </SelectItem>
                         )
                       })}
                     </SelectContent>
                   </Select>
-                  <FormMessage className="ml-0.5 text-[11px]" />
+                  <FormMessage className="ml-1 text-[11px] font-medium" />
                 </FormItem>
               )}
             />
+          </div>
 
-            {/* File Upload Area */}
-            <div className="space-y-2 pt-1">
-              <FormLabel className="text-muted-foreground/80 ml-0.5 text-[13px] font-semibold">
-                数据源文件
-              </FormLabel>
-              <div className="group border-border/60 bg-secondary/10 hover:border-primary/40 hover:bg-primary/[0.02] relative overflow-hidden rounded-[1.5rem] border border-dashed p-6 text-center transition-all">
-                <input
-                  type="file"
-                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                  className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                  onChange={handleFileChange}
-                />
+          {/* File Upload Area */}
+          <div className="space-y-3">
+            <FormLabel className="text-foreground/80 ml-0.5 text-[13px] font-bold">
+              上传数据源
+            </FormLabel>
+            <div className="group border-border/40 bg-secondary/20 hover:border-primary/30 hover:bg-primary/[0.02] relative overflow-hidden rounded-[2rem] border p-8 text-center transition-all duration-500">
+              <input
+                type="file"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+                onChange={handleFileChange}
+              />
 
-                <AnimatePresence mode="wait">
-                  {file ? (
-                    <motion.div
-                      key="file"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      className="flex flex-col items-center gap-2"
-                    >
-                      <div className="bg-primary/10 text-primary rounded-xl p-3 shadow-sm">
-                        <FileUp className="h-5 w-5" />
-                      </div>
-                      <span className="max-w-full overflow-hidden px-4 text-sm font-semibold text-ellipsis whitespace-nowrap">
+              <AnimatePresence mode="wait">
+                {file ? (
+                  <motion.div
+                    key="file"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col items-center gap-3"
+                  >
+                    <div className="bg-primary/10 text-primary flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm ring-1 ring-primary/20">
+                      <FileUp className="h-6 w-6" />
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="max-w-[240px] truncate text-sm font-bold">
                         {file.name}
                       </span>
-                      <span className="text-muted-foreground/40 text-[10px] font-medium">
-                        {(file.size / 1024).toFixed(2)} KB
+                      <span className="text-muted-foreground/50 text-[10px] font-bold uppercase monospaced">
+                        {(file.size / 1024).toFixed(2)} KB • READY
                       </span>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="upload"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      className="flex flex-col items-center gap-2"
-                    >
-                      <div className="bg-primary/10 text-primary rounded-xl p-3 shadow-sm transition-transform duration-300 group-hover:scale-105">
-                        <Upload className="h-5 w-5" />
-                      </div>
-                      <span className="text-sm font-semibold">点击上传或拖拽文件</span>
-                      <span className="text-muted-foreground/40 text-[10px] font-medium whitespace-nowrap">
-                        支持 CSV, XLSX (最大 5MB)
-                      </span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="upload"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col items-center gap-3"
+                  >
+                    <div className="bg-primary shadow-primary/20 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-transform duration-500 group-hover:scale-110">
+                      <Upload className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-sm font-bold">点击上传或拖拽文件</span>
+                      <p className="text-muted-foreground/40 text-[10px] font-semibold uppercase tracking-tight">
+                        Excel, CSV (Max 5MB)
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 pt-4">
+            <Button
+              type="submit"
+              disabled={isAnalyzing}
+              onClick={() => {
+                submitMode.current = 'sync'
+              }}
+              className="bg-primary hover:bg-primary/90 h-14 w-full rounded-[1.25rem] text-base font-bold text-white shadow-[0_8px_16px_-4px_rgba(0,102,255,0.3)] transition-all active:scale-[0.98] dark:shadow-[0_8px_16px_-4px_rgba(0,102,255,0.5)]"
+            >
+              {isAnalyzing && submitMode.current === 'sync' ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  正在深度分析中
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  开始智能分析
+                </>
+              )}
+            </Button>
+
+            <div className="relative py-2 opacity-30">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-dotted border-foreground" />
+              </div>
+              <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.3em]">
+                <span className="bg-background px-3">或</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 pt-4">
-              <Button
-                type="submit"
-                disabled={isAnalyzing}
-                onClick={() => {
-                  submitMode.current = 'sync'
-                }}
-                className="bg-primary hover:bg-primary/90 h-11 w-full rounded-xl font-semibold text-white shadow-sm transition-all active:scale-[0.98]"
-              >
-                {isAnalyzing && submitMode.current === 'sync' ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    正在生成
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    开始智能分析
-                  </>
-                )}
-              </Button>
-
-              <div className="relative py-1">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="border-border/40 w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-[9px] uppercase">
-                  <span className="bg-background text-muted-foreground/30 px-2 font-bold tracking-[0.2em]">
-                    OR
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isAnalyzing}
-                onClick={() => {
-                  submitMode.current = 'async'
-                }}
-                variant="outline"
-                className="border-border/40 bg-secondary/20 hover:bg-secondary/40 h-11 w-full rounded-xl font-semibold transition-all active:scale-[0.98]"
-              >
-                {isAnalyzing && submitMode.current === 'async' ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    正在提交
-                  </>
-                ) : (
-                  <>
-                    <Cpu className="text-primary/70 mr-2 h-4 w-4" />
-                    后台分析模式
-                  </>
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
+            <Button
+              type="submit"
+              disabled={isAnalyzing}
+              onClick={() => {
+                submitMode.current = 'async'
+              }}
+              variant="outline"
+              className="border-border/40 bg-secondary/30 hover:bg-secondary/50 h-14 w-full rounded-[1.25rem] text-sm font-bold transition-all active:scale-[0.98]"
+            >
+              {isAnalyzing && submitMode.current === 'async' ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  已提交队列
+                </>
+              ) : (
+                <>
+                  <Cpu className="text-primary/70 mr-2 h-4 w-4" />
+                  启用高性能异步分析
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   )
 }

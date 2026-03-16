@@ -28,6 +28,13 @@
 
         --glass-bg: rgba(255, 255, 255, 0.7);
         --glass-border: rgba(0, 0, 0, 0.08);
+
+        --header-height: 4rem;
+        --shell-max-width: 80rem;
+        --shell-px: 1rem;
+        --header-bg: rgba(255, 255, 255, 0.72);
+        --header-border: rgba(0, 0, 0, 0.06);
+        --footer-border: rgba(0, 0, 0, 0.08);
     }
 
     .dark {
@@ -54,6 +61,10 @@
 
         --glass-bg: rgba(10, 10, 12, 0.8); /* Deep dark glass */
         --glass-border: rgba(255, 255, 255, 0.08);
+
+        --header-bg: rgba(10, 10, 12, 0.72);
+        --header-border: rgba(255, 255, 255, 0.08);
+        --footer-border: rgba(255, 255, 255, 0.08);
     }
 }
 
@@ -130,6 +141,27 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--glass-border);
+    }
+
+    .shell-container {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: var(--shell-max-width);
+        padding-left: var(--shell-px);
+        padding-right: var(--shell-px);
+    }
+
+    @media (min-width: 640px) {
+        .shell-container {
+            --shell-px: 1.5rem;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .shell-container {
+            --shell-px: 2rem;
+        }
     }
 
     .apple-shadow {

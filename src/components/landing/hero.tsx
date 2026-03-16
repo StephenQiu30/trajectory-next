@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
@@ -75,18 +76,22 @@ export default function Hero() {
             className="flex flex-wrap gap-4"
           >
             <Button
+              asChild
               size="lg"
               className="bg-primary hover:bg-primary/90 apple-shadow group h-14 rounded-full border-none px-8 text-base font-bold text-white transition-all"
             >
-              立即免费开启
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Link href="/ai">
+                立即免费开启
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
             <Button
+              asChild
               variant="ghost"
               size="lg"
               className="glass h-14 rounded-full px-8 text-base font-bold"
             >
-              查看案例
+              <Link href="/ai">查看案例</Link>
             </Button>
           </motion.div>
         </motion.div>

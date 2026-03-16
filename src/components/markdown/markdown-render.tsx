@@ -72,7 +72,8 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
   return (
     <article
       className={cn(
-        'prose prose-lg md:prose-xl prose-neutral dark:prose-invert max-w-none tracking-tight break-words',
+        'prose prose-neutral dark:prose-invert max-w-none tracking-tight break-words',
+        'prose-p:leading-relaxed prose-li:leading-relaxed',
         className
       )}
     >
@@ -80,36 +81,33 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeSlug, rehypeKatex]}
         components={{
-          // 自定义标题样式
           h1: ({ children }) => (
-            <h1 className="text-foreground mt-12 mb-6 text-2xl font-bold tracking-tight first:mt-0">
+            <h1 className="text-foreground mt-5 mb-3 text-lg font-bold tracking-tight first:mt-0">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-foreground mt-12 mb-6 text-xl font-semibold tracking-tight first:mt-0">
+            <h2 className="text-foreground mt-5 mb-2 text-base font-bold tracking-tight first:mt-0">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-foreground mt-8 mb-4 text-lg font-medium tracking-tight">
+            <h3 className="text-foreground mt-4 mb-2 text-[14px] font-bold tracking-tight">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-foreground mt-6 mb-4 text-base font-medium tracking-tight">
+            <h4 className="text-foreground mt-3 mb-2 text-[13px] font-bold tracking-tight">
               {children}
             </h4>
           ),
 
-          // 段落
           p: ({ children }) => (
-            <p className="text-foreground/90 dark:text-foreground text-[15px] leading-relaxed sm:text-base [&:not(:first-child)]:mt-6">
+            <p className="text-foreground/70 dark:text-foreground/80 text-[13px] leading-[1.6] [&:not(:first-child)]:mt-2.5">
               {children}
             </p>
           ),
 
-          // 链接
           a: ({ href, children }) => {
             const isRef = href && href.startsWith('#')
             return (
@@ -117,29 +115,29 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
                 href={href}
                 target={isRef ? undefined : '_blank'}
                 rel={isRef ? undefined : 'noopener noreferrer'}
-                className="font-medium text-blue-600 underline decoration-blue-500/30 underline-offset-[5px] transition-all hover:decoration-blue-500 dark:text-blue-400"
+                className="font-bold text-primary underline decoration-primary/20 underline-offset-[2px] transition-all hover:decoration-primary"
               >
                 {children}
               </a>
             )
           },
 
-          // 图片
           img: ({ src, alt }) => (
-            <span className="my-8 block first:mt-0 last:mb-0">
+            <span className="my-5 block first:mt-0 last:mb-0">
               <img
                 src={src || ''}
                 alt={alt || ''}
-                className="bg-muted max-h-[600px] w-full rounded-lg object-contain"
+                className="bg-secondary/10 max-h-[400px] w-full rounded-xl object-contain shadow-sm ring-1 ring-white/5"
                 loading="lazy"
               />
               {alt && (
-                <span className="text-muted-foreground mt-3 block text-center text-sm">{alt}</span>
+                <span className="text-muted-foreground/40 mt-2 block text-center text-[9px] font-bold tracking-widest uppercase italic">
+                  {alt}
+                </span>
               )}
             </span>
           ),
 
-          // 代码块
           pre: ({ children }) => <>{children}</>,
           code: ({
             inline,
@@ -160,7 +158,7 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
             return (
               <code
                 className={cn(
-                  'rounded-md border border-zinc-200 bg-zinc-100 px-[0.35rem] py-[0.15rem] font-mono text-[13px] font-medium text-zinc-900 dark:border-transparent dark:bg-zinc-800/60 dark:text-zinc-200 [&::after]:!content-none [&::before]:!content-none',
+                  'rounded-md border border-primary/5 bg-primary/5 px-1 py-0.5 font-mono text-[10px] font-bold text-primary dark:bg-primary/10 dark:text-primary-foreground/80 [&::after]:!content-none [&::before]:!content-none',
                   className
                 )}
                 {...props}
@@ -170,56 +168,58 @@ export function MarkdownRender({ content, className }: MarkdownRendererProps) {
             )
           },
 
-          // 引用块
           blockquote: ({ children }) => (
-            <blockquote className="!border-border !text-muted-foreground my-6 border-l-[3px] pl-5 text-[15px] italic">
-              {children}
+            <blockquote className="my-4 border-l-2 border-primary/20 bg-primary/[0.005] py-2 pr-3 pl-4 rounded-r-lg italic shadow-sm">
+              <div className="text-muted-foreground/70 text-[12px] leading-relaxed">
+                {children}
+              </div>
             </blockquote>
           ),
 
-          // 列表
           ul: ({ children }) => (
-            <ul className="marker:text-muted-foreground my-6 ml-6 list-disc space-y-2">
+            <ul className="marker:text-primary/30 my-4 ml-4 list-disc space-y-1.5">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="marker:text-muted-foreground my-6 ml-6 list-decimal space-y-2">
+            <ol className="marker:text-primary/30 my-4 ml-4 list-decimal space-y-1.5 font-semibold">
               {children}
             </ol>
           ),
-          li: ({ children }) => {
-            return (
-              <li className="text-foreground/90 dark:text-foreground pl-1 text-[15px] leading-relaxed sm:text-base">
-                {children}
-              </li>
-            )
-          },
-
-          strong: ({ children }) => (
-            <strong className="!text-foreground font-semibold">{children}</strong>
+          li: ({ children }) => (
+            <li className="text-foreground/70 dark:text-foreground/80 pl-1 text-[13px] leading-[1.6]">
+              {children}
+            </li>
           ),
 
-          // 表格
+          strong: ({ children }) => (
+            <strong className="text-foreground font-bold tracking-tight">{children}</strong>
+          ),
+
           table: ({ children }) => (
-            <div className="my-8 w-full overflow-y-auto">
-              <table className="w-full min-w-[600px] border-collapse text-sm">{children}</table>
+            <div className="glass apple-shadow my-6 w-full overflow-hidden rounded-lg border border-white/5 bg-white/30 dark:bg-white/[0.01]">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[400px] border-collapse text-left text-[11px]">
+                  {children}
+                </table>
+              </div>
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="border-border bg-muted/50 border-b">{children}</thead>
+            <thead className="bg-secondary/10 text-muted-foreground/50 border-b border-border/20 text-[8px] font-bold uppercase tracking-widest">
+              {children}
+            </thead>
           ),
-          tbody: ({ children }) => <tbody className="divide-border divide-y">{children}</tbody>,
-          tr: ({ children }) => <tr className="hover:bg-muted/50 transition-colors">{children}</tr>,
+          tbody: ({ children }) => <tbody className="divide-y divide-border/10">{children}</tbody>,
+          tr: ({ children }) => <tr className="hover:bg-primary/[0.005] transition-colors">{children}</tr>,
           th: ({ children }) => (
-            <th className="!text-foreground px-4 py-3 text-left font-semibold">{children}</th>
+            <th className="px-4 py-2">{children}</th>
           ),
           td: ({ children }) => (
-            <td className="!text-foreground/90 px-4 py-3 align-top">{children}</td>
+            <td className="text-foreground/70 px-4 py-2 align-top">{children}</td>
           ),
 
-          // 分隔线
-          hr: () => <hr className="border-border/40 my-12 border-t dark:border-white/20" />,
+          hr: () => <hr className="my-6 border-t border-border/20 dark:border-white/5" />,
         }}
       >
         {content}

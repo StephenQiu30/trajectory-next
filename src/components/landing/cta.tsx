@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
@@ -38,11 +39,14 @@ export default function CTA() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           <Button
+            asChild
             size="lg"
             className="bg-primary hover:bg-primary/90 apple-shadow group h-16 rounded-full px-10 text-lg font-bold text-white transition-all"
           >
-            立即免费开启
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            <Link href="/ai">
+              立即免费开启
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </Button>
         </motion.div>
       </div>

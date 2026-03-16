@@ -4,6 +4,12 @@ import JSONBig from 'json-bigint'
 
 const JSONBigStr = JSONBig({ storeAsString: true })
 
+export type RequestType = 'form'
+
+export type RequestConfig = AxiosRequestConfig & {
+  requestType?: RequestType
+}
+
 /**
  * 创建 Axios 实例
  */
@@ -34,6 +40,9 @@ axiosInstance.interceptors.request.use(
   function (config) {
     if (process.env.NODE_ENV === 'development') {
       console.log(`[API Request] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`)
+    }
+    if ((config as RequestConfig).requestType === 'form') {
+      config.headers?.set?.('Content-Type', 'multipart/form-data')
     }
     if (typeof window !== 'undefined') {
       try {
@@ -82,7 +91,7 @@ axiosInstance.interceptors.response.use(
  * @param url 请求地址
  * @param config 请求配置
  */
-const request = <T>(url: string, config: AxiosRequestConfig): Promise<T> => {
+const request = <T>(url: string, config: RequestConfig): Promise<T> => {
   return axiosInstance(url, config) as Promise<T>
 }
 

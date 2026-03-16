@@ -19,11 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body>
+      <body className="min-h-screen bg-background font-sans antialiased">
         <RootProviders>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
-            <main className="flex-1 pt-16">
+            <main className="flex-1 pt-[var(--header-height)]">
               <React.Suspense fallback={<FullScreenLoader />}>{children}</React.Suspense>
             </main>
             <Footer />
