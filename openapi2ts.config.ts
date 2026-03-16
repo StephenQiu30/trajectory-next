@@ -15,31 +15,10 @@ export default [
     serversPath: './src/api',
   },
   {
-    projectName: 'file',
-    namespace: 'FileAPI',
-    requestLibPath: "import request from '@/lib/request'",
-    schemaPath: 'http://localhost:8083/api/v3/api-docs',
-    serversPath: './src/api',
-  },
-  {
-    projectName: 'log',
-    namespace: 'LogAPI',
-    requestLibPath: "import request from '@/lib/request'",
-    schemaPath: 'http://localhost:8084/api/v3/api-docs',
-    serversPath: './src/api',
-  },
-  {
-    projectName: 'mail',
-    namespace: 'MailAPI',
-    requestLibPath: "import request from '@/lib/request'",
-    schemaPath: 'http://localhost:8085/api/v3/api-docs',
-    serversPath: './src/api',
-  },
-  {
     projectName: 'ai',
     namespace: 'AiAPI',
     requestLibPath: "import request from '@/lib/request'",
-    schemaPath: 'http://localhost:8086/api/v3/api-docs',
+    schemaPath: 'http://localhost:8083/api/v3/api-docs',
     serversPath: './src/api',
   },
 ]
