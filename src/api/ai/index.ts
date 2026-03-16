@@ -5,4 +5,4 @@
 import * as smartAnalysisController from './smartAnalysisController'
 export default {
   smartAnalysisController,
-  }
+}

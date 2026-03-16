@@ -16,8 +16,7 @@ import { ArrowLeft, Camera, CheckCircle2, Loader2, Shield, X } from 'lucide-reac
 import Link from 'next/link'
 import { AuthModal } from '@/components/auth/auth-modal'
 import { LoginPromptCard } from '@/components/auth/login-prompt-card'
-import { editUser, getLoginUser } from '@/api/user/userController'
-import { addFile } from '@/api/file/fileController'
+import { editUser, getLoginUser, uploadAvatar } from '@/api/user/userController'
 import { setLoginUser } from '@/store/modules/user/userSlice'
 
 const containerVariants = {
@@ -108,7 +107,7 @@ export default function SettingsPage() {
 
     setUploading(true)
     try {
-      const res = await addFile({ fileUploadRequest: { biz: 'user_avatar' } }, file)
+      const res = await uploadAvatar({}, file)
       if (res.code === 0 && res.data?.url) {
         setFormData(prev => ({ ...prev, userAvatar: res.data!.url! }))
         setChanges(prev => new Set(prev).add('userAvatar'))
