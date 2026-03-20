@@ -1,43 +1,23 @@
-# 轨迹 - 基于AIGC的数据可视化平台
+# 轨迹-基于AIGC的数据可视化平台（trajectory-next）
 
-基于AIGC的数据可视化平台。
+## 功能
+- 账号与认证：支持 GitHub / 邮箱验证码登录，登录成功后将 token 写入 `localStorage`。
+- 个人中心：个人信息、账号设置（编辑资料、上传头像）。
+- 通知中心：基于 WebSocket 实时推送通知；认证失败会导致连接关闭。
+- AI 页面入口：`/ai`、`/ai/[id]` 进行智能分析与展示（调用后端网关接口）。
 
-## Getting Started
+## 环境变量
+编辑 `./.env.production`：
+- `NEXT_PUBLIC_API_BASE_URL`：后端网关地址，例如 `http://<host>:8080/api`
+- `NEXT_PUBLIC_WS_PORT`：WebSocket 端口，例如 `9091`（前端会按 `协议+主机+端口+/websocket` 连接）
 
-First, run the development server:
+注意：`NEXT_PUBLIC_*` 会在构建阶段烘焙进前端代码，因此 Docker 镜像构建前必须先改好 `.env.production`。
 
+## Docker 部署
+1. 进入目录构建并启动
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd trajectory-next
+docker compose up -d --build
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically
-optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions
-are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use
-the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for
-more details.
+2. 访问
+`http://localhost:3000`

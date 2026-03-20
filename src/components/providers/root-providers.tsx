@@ -43,6 +43,16 @@ function AuthLoader({ children }: { children: React.ReactNode }) {
     fetchCurrentUser()
   }, [dispatch])
 
+  useEffect(() => {
+    const onAuthInvalid = () => {
+      dispatch(clearLoginUser())
+    }
+    window.addEventListener('auth-invalid', onAuthInvalid)
+    return () => {
+      window.removeEventListener('auth-invalid', onAuthInvalid)
+    }
+  }, [dispatch])
+
   // WebSocket Connection Logic
   const socketRef = React.useRef<WebSocket | null>(null)
   const reconnectTimerRef = React.useRef<NodeJS.Timeout>(null)

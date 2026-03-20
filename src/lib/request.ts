@@ -48,7 +48,13 @@ axiosInstance.interceptors.request.use(
       try {
         const token = localStorage.getItem('token')
         if (token) {
-          config.headers.setAuthorization(`Bearer ${token}`)
+          const headers: any = config.headers ?? {}
+          if (typeof headers?.set === 'function') {
+            headers.set('Authorization', `Bearer ${token}`)
+          } else {
+            headers.Authorization = `Bearer ${token}`
+            config.headers = headers
+          }
         }
       } catch {
         // Ignore storage access errors (e.g. disabled storage)
@@ -75,6 +81,15 @@ axiosInstance.interceptors.response.use(
   function (error) {
     // 处理响应错误
     const { response } = error
+    const status = response?.status
+    if (typeof window !== 'undefined' && (status === 401 || status === 403)) {
+      try {
+        localStorage.removeItem('token')
+      } catch {
+        // ignore
+      }
+      window.dispatchEvent(new Event('auth-invalid'))
+    }
     if (response?.data?.message) {
       toast.error(response.data.message)
     } else {
